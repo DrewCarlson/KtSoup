@@ -1,12 +1,12 @@
 # KtSoup
 
-A multiplatform HTML5 parsing library built on [Lexbor](https://github.com/lexbor/lexbor).
+A multiplatform HTML5 parsing library built on [Lexbor](https://github.com/lexbor/lexbor) and [Jsoup](https://jsoup.org/).
 
 **WIP** The project is not yet published or ready for use, though it may be a helpful example.
 
 TODO:
  - Finalize initial API surface
- - Add Jvm and JS targets
+ - Add JS target
  - Add test workflows
  - Add documentation and publishing workflows
  - Extra: Add all-in-one fetch and parse API using Ktor

@@ -1,0 +1,65 @@
+/**
+ * KtSoup
+ * Copyright (C) 2023 Drew Carlson
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package ktsoup
+
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+
+public actual class KtSoupDocument {
+
+    private var document: Document? = null
+
+    public actual fun parse(html: String): Boolean {
+        document = Jsoup.parse(html)
+        return true
+    }
+
+    public actual fun title(): String {
+        return checkNotNull(document).title()
+    }
+
+    public actual fun body(): KtSoupElement? {
+        return KtSoupElement(checkNotNull(document).body())
+    }
+
+    public actual fun head(): KtSoupElement? {
+        return KtSoupElement(checkNotNull(document).head())
+    }
+
+    public actual fun getElementById(id: String): KtSoupElement? {
+        return checkNotNull(document).getElementById(id)?.let { KtSoupElement(it) }
+    }
+
+    public actual fun getElementsByClass(className: String): List<KtSoupElement> {
+        return checkNotNull(document).getElementsByClass(className).map { KtSoupElement(it) }
+    }
+
+    public actual fun getElementsByTagName(tagName: String): List<KtSoupElement> {
+        return checkNotNull(document).getElementsByTag(tagName).map { KtSoupElement(it) }
+    }
+
+    public actual fun close() {
+    }
+
+    public actual fun <R> use(block: (KtSoupDocument) -> R): R {
+        return try {
+            block(this)
+        } finally {
+            close()
+        }
+    }
+}

@@ -1,0 +1,57 @@
+public final class ktsoup/KtSoupDocument {
+	public fun <init> ()V
+	public final fun body ()Lktsoup/KtSoupElement;
+	public final fun close ()V
+	public final fun getElementById (Ljava/lang/String;)Lktsoup/KtSoupElement;
+	public final fun getElementsByClass (Ljava/lang/String;)Ljava/util/List;
+	public final fun getElementsByTagName (Ljava/lang/String;)Ljava/util/List;
+	public final fun head ()Lktsoup/KtSoupElement;
+	public final fun parse (Ljava/lang/String;)Z
+	public final fun title ()Ljava/lang/String;
+	public final fun use (Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
+}
+
+public final class ktsoup/KtSoupElement : ktsoup/KtSoupNode {
+	public fun <init> (Lorg/jsoup/nodes/Element;)V
+	public final fun attr (Ljava/lang/String;)Ljava/lang/String;
+	public final fun attrs ()Ljava/util/Map;
+	public final fun className ()Ljava/lang/String;
+	public final fun id ()Ljava/lang/String;
+	public final fun tagName ()Ljava/lang/String;
+}
+
+public class ktsoup/KtSoupNode {
+	public fun <init> (Lorg/jsoup/nodes/Node;)V
+	public final fun child (I)Lktsoup/KtSoupNode;
+	public final fun children ()Ljava/util/List;
+	public final fun html ()Ljava/lang/String;
+	public final fun nodeName ()Ljava/lang/String;
+	public final fun nodeType ()Lktsoup/KtSoupNodeType;
+	public final fun parent ()Lktsoup/KtSoupNode;
+	public final fun textContent ()Ljava/lang/String;
+}
+
+public final class ktsoup/KtSoupNodeType : java/lang/Enum {
+	public static final field ATTRIBUTE Lktsoup/KtSoupNodeType;
+	public static final field CDATA_SECTION Lktsoup/KtSoupNodeType;
+	public static final field COMMENT Lktsoup/KtSoupNodeType;
+	public static final field DOCUMENT Lktsoup/KtSoupNodeType;
+	public static final field DOCUMENT_FRAGMENT Lktsoup/KtSoupNodeType;
+	public static final field DOCUMENT_TYPE Lktsoup/KtSoupNodeType;
+	public static final field ELEMENT Lktsoup/KtSoupNodeType;
+	public static final field ENTITY Lktsoup/KtSoupNodeType;
+	public static final field ENTITY_REFERENCE Lktsoup/KtSoupNodeType;
+	public static final field LAST_ENTRY Lktsoup/KtSoupNodeType;
+	public static final field NOTATION Lktsoup/KtSoupNodeType;
+	public static final field PROCESSING_INSTRUCTION Lktsoup/KtSoupNodeType;
+	public static final field TEXT Lktsoup/KtSoupNodeType;
+	public static final field UNDEF Lktsoup/KtSoupNodeType;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lktsoup/KtSoupNodeType;
+	public static fun values ()[Lktsoup/KtSoupNodeType;
+}
+
+public final class ktsoup/KtSoupText : ktsoup/KtSoupNode {
+	public fun <init> (Lorg/jsoup/nodes/TextNode;)V
+}
+

@@ -16,16 +16,14 @@
  */
 package ktsoup
 
-public expect class KtSoupDocument() {
+import org.jsoup.nodes.Element
+import org.jsoup.nodes.Node
+import org.jsoup.nodes.TextNode
 
-    public fun parse(html: String): Boolean
-    public fun title(): String
-    public fun body(): KtSoupElement?
-    public fun head(): KtSoupElement?
-    public fun getElementById(id: String): KtSoupElement?
-    public fun getElementsByClass(className: String): List<KtSoupElement>
-    public fun getElementsByTagName(tagName: String): List<KtSoupElement>
-    public fun close()
-
-    public fun <R> use(block: (KtSoupDocument) -> R): R
+internal fun Node.wrap(): KtSoupNode {
+    return when (this) {
+        is Element -> KtSoupElement(this)
+        is TextNode -> KtSoupText(this)
+        else -> KtSoupNode(this)
+    }
 }

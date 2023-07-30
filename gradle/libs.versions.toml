@@ -19,6 +19,8 @@ mavenPublish = { id = "com.vanniktech.maven.publish", version = "0.25.3" }
 downloadPlugin = { id = "de.undercouch.download", version = "5.4.0" }
 
 [libraries]
+jsoup = { module = "org.jsoup:jsoup", version = "1.16.1" }
+
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktorio" }
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktorio" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktorio" }

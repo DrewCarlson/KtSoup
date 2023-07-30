@@ -21,16 +21,10 @@ fun lexborSourceFiles(folder: String): List<File> =
 fun List<File>.filterHeaders(): List<File> = filter { it.name.endsWith(".h") }
 
 kotlin {
-    /*jvm {
-        jvmToolchain(8)
-        withJava()
-        testRuns.named("test") {
-            executionTask.configure {
-                useJUnitPlatform()
-            }
-        }
+    jvm {
+        jvmToolchain(11)
     }
-    js(IR) {
+    /*js(IR) {
         browser()
         nodejs()
     }*/
@@ -45,7 +39,7 @@ kotlin {
     ) {
         compilations.getByName("main") {
             val nativeTargetName = konanTarget.name.replace("_simulator", "")
-            val staticLibPath = rootProject.file("lexbor-bin/${nativeTargetName}").absolutePath
+            val staticLibPath = rootProject.file("lexbor-bin/${nativeTargetName}")
             val lexbor by cinterops.creating {
                 packageName("lexbor")
                 includeDirs("$lexborSourcePath/..")
@@ -67,7 +61,7 @@ kotlin {
                 compilerOpts("-DLEXBOR_BUILDING", "-DLEXBOR_STATIC")
                 fun applyExtraOpts() {
                     extraOpts(
-                        "-libraryPath", staticLibPath,
+                        "-libraryPath", staticLibPath.absolutePath,
                         "-staticLibrary", "liblexbor_static.a",
                         "-compiler-options", "-std=c99"
                     )
@@ -84,12 +78,12 @@ kotlin {
                     else -> Unit
                 }
                 val downloadTask = tasks.register<Download>("downloadLiblexbor${nativeTargetName}") {
-                    enabled = !File(staticLibPath).exists()
+                    enabled = !staticLibPath.exists()
                     src("https://github.com/DrewCarlson/KtSoup/releases/download/lexbor-v${libs.versions.lexbor.get()}/${nativeTargetName}.zip")
                     dest(buildDir.resolve("${nativeTargetName}.zip"))
                 }
                 val extractTask = tasks.register<Copy>("extractLiblexbor${nativeTargetName}") {
-                    enabled = !File(staticLibPath).exists()
+                    enabled = !staticLibPath.exists()
                     dependsOn(downloadTask.get())
                     from(zipTree(downloadTask.get().dest))
                     into(rootProject.file("lexbor-bin").absolutePath)
@@ -113,8 +107,16 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
-        //val jvmMain by getting
-        //val jvmTest by getting
+        val jvmMain by getting {
+            dependencies {
+                implementation(libs.jsoup)
+            }
+        }
+        val jvmTest by getting {
+            dependencies {
+                implementation(kotlin("test-junit"))
+            }
+        }
         //val jsMain by getting
         //val jsTest by getting
 

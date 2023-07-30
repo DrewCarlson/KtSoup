@@ -22,7 +22,7 @@ import platform.posix.size_tVar
 
 private const val START_LIST_SIZE = 128uL
 
-public actual class KtSoupDocument : AutoCloseable {
+public actual class KtSoupDocument {
 
     private val documentPointer = checkNotNull(lxb_html_document_create()) {
         "Failed to create document handle: lxb_html_document_create()"
@@ -36,7 +36,7 @@ public actual class KtSoupDocument : AutoCloseable {
         ) == LXB_STATUS_OK
     }
 
-    actual override fun close() {
+    public actual fun close() {
         lxb_html_document_destroy(documentPointer)
     }
 
@@ -126,6 +126,14 @@ public actual class KtSoupDocument : AutoCloseable {
         return List(lxb_dom_collection_length(collection).convert()) { i ->
             val element = checkNotNull(lxb_dom_collection_node(collection, i.convert()))
             KtSoupElement(element.reinterpret())
+        }
+    }
+
+    public actual fun <R> use(block: (KtSoupDocument) -> R): R {
+        return try {
+            block(this)
+        } finally {
+            close()
         }
     }
 }
