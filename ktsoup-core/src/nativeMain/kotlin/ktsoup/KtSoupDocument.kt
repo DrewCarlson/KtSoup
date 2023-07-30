@@ -22,7 +22,6 @@ import platform.posix.size_tVar
 
 private const val START_LIST_SIZE = 128uL
 
-@OptIn(ExperimentalStdlibApi::class)
 public actual class KtSoupDocument : AutoCloseable {
 
     private val documentPointer = checkNotNull(lxb_html_document_create()) {

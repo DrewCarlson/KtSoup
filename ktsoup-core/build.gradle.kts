@@ -1,3 +1,5 @@
+import org.gradle.internal.os.OperatingSystem
+import org.jetbrains.kotlin.konan.target.KonanTarget
 import java.io.File
 
 plugins {
@@ -5,10 +7,11 @@ plugins {
     id("org.jetbrains.kotlinx.binary-compatibility-validator")
 }
 
-val lexborBasePath = rootProject.file("lexbor/source/lexbor").absolutePath
+val lexborSourcePath = rootProject.file("lexbor/source/lexbor").absolutePath
+val lexborLibBasePath = rootProject.file("lexbor/install").absolutePath
 
 fun lexborSourceFiles(folder: String): List<File> =
-    rootProject.file("${lexborBasePath}/${folder}")
+    rootProject.file("${lexborSourcePath}/${folder}")
         .listFiles()
         .orEmpty()
         .toList()
@@ -25,19 +28,23 @@ kotlin {
             }
         }
     }
-    macosArm64()
-    macosX64()
-    linuxX64()
-    linuxArm64()*/
-    mingwX64 {
+    js(IR) {
+        browser()
+        nodejs()
+    }*/
+    configure(
+        listOfNotNull(
+            mingwX64(),
+            if (!OperatingSystem.current().isWindows) linuxX64() else null,
+            if (!OperatingSystem.current().isWindows) linuxArm64() else null,
+            if (OperatingSystem.current().isMacOsX) macosX64() else null,
+            if (OperatingSystem.current().isMacOsX) macosArm64() else null,
+        )
+    ) {
         compilations.getByName("main") {
-            binaries {
-                getTest("debug").apply {
-                    linkerOpts("-LC:\\Users\\drewc\\Downloads", "-llexbor")
-                }
-            }
             val lexbor by cinterops.creating {
                 packageName("lexbor")
+                includeDirs("$lexborSourcePath/..")
                 headers(lexborSourceFiles("core").filterHeaders())
                 headers(lexborSourceFiles("css").filterHeaders())
                 headers(lexborSourceFiles("dom").filterHeaders())
@@ -50,16 +57,49 @@ kotlin {
                 headers(lexborSourceFiles("tag").filterHeaders())
                 //headers(lexborSourceFiles("unicode").filterHeaders())
                 headers(lexborSourceFiles("utils").filterHeaders())
-                includeDirs("$lexborBasePath/..")
+                // NOTE: Under normal conditions, lexbor compiles with __declspec(dllimport)
+                // for static win32 builds.  These compilerOpts disable this behavior for
+                // correct static linking on windows.
+                compilerOpts("-DLEXBOR_BUILDING", "-DLEXBOR_STATIC")
+                fun applyExtraOpts() {
+                    extraOpts(
+                        "-libraryPath", rootProject.file("lexbor-bin/${targetName}").absolutePath,
+                        "-staticLibrary", "liblexbor_static.a",
+                        "-compiler-options", "-std=c99"
+                    )
+                }
+                when (konanTarget) {
+                    KonanTarget.IOS_ARM64,
+                    KonanTarget.IOS_SIMULATOR_ARM64,
+                    KonanTarget.IOS_X64,
+                    KonanTarget.MACOS_ARM64,
+                    KonanTarget.MACOS_X64 -> {
+                        if (OperatingSystem.current().isMacOsX) {
+                            applyExtraOpts()
+                        }
+                    }
+                    KonanTarget.LINUX_ARM64,
+                    KonanTarget.LINUX_X64 -> {
+                        if (OperatingSystem.current().isLinux) {
+                            applyExtraOpts()
+                        }
+                    }
+                    KonanTarget.MINGW_X64 -> {
+                        if (OperatingSystem.current().isWindows) {
+                            applyExtraOpts()
+                        }
+                    }
+                    else -> Unit
+                }
             }
         }
     }
-
 
     sourceSets {
         all {
             explicitApi()
             languageSettings {
+                optIn("kotlin.ExperimentalStdlibApi")
                 optIn("kotlinx.cinterop.ExperimentalForeignApi")
             }
         }
@@ -80,11 +120,19 @@ kotlin {
             dependsOn(commonTest)
         }
 
-        val mingwX64Main by getting {
-            dependsOn(nativeMain)
+        val mingwX64Main by getting { dependsOn(nativeMain) }
+        val mingwX64Test by getting { dependsOn(nativeTest) }
+        if (OperatingSystem.current().isMacOsX) {
+            val macosArm64Main by getting { dependsOn(nativeMain) }
+            val macosArm64Test by getting { dependsOn(nativeTest) }
+            val macosX64Main by getting { dependsOn(nativeMain) }
+            val macosX64Test by getting { dependsOn(nativeTest) }
         }
-        val mingwX64Test by getting {
-            dependsOn(nativeTest)
+        if (!OperatingSystem.current().isWindows) {
+            val linuxX64Main by getting { dependsOn(nativeMain) }
+            val linuxX64Test by getting { dependsOn(nativeTest) }
+            val linuxArm64Main by getting { dependsOn(nativeMain) }
+            val linuxArm64Test by getting { dependsOn(nativeTest) }
         }
     }
 }
