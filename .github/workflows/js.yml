@@ -1,0 +1,32 @@
+name: Js Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  test-js:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 11
+      - name: Cache Build files
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle
+          key: ${{ runner.os }}-${{ hashFiles('gradle.properties') }}
+      - uses: gradle/gradle-build-action@v2
+        with:
+          arguments: jsTest
