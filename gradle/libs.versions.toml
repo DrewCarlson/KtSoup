@@ -4,7 +4,7 @@ dokka = "1.8.20"
 ktorio = "2.3.2"
 binary_compat = "0.13.2"
 kover = "0.7.3"
-spotless = "6.19.0"
+spotless = "6.20.0"
 
 [plugins]
 multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
