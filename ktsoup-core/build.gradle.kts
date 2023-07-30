@@ -24,10 +24,16 @@ kotlin {
     jvm {
         jvmToolchain(11)
     }
-    /*js(IR) {
-        browser()
+    js(IR) {
+        browser {
+            testTask(Action {
+                useKarma {
+                    useFirefoxHeadless()
+                }
+            })
+        }
         nodejs()
-    }*/
+    }
     configure(
         listOfNotNull(
             mingwX64(),
@@ -117,8 +123,16 @@ kotlin {
                 implementation(kotlin("test-junit"))
             }
         }
-        //val jsMain by getting
-        //val jsTest by getting
+        val jsMain by getting {
+            dependencies {
+                implementation(npm("node-html-parser", "6.1.5"))
+            }
+        }
+        val jsTest by getting {
+            dependencies {
+                implementation(kotlin("test-js"))
+            }
+        }
 
         val nativeMain by creating {
             dependsOn(commonMain)

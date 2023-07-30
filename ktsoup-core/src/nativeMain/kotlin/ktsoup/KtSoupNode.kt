@@ -87,16 +87,16 @@ public actual open class KtSoupNode(
         return nodePtr.pointed.parent?.wrap()
     }
 
-    override fun equals(other: Any?): Boolean {
+    actual override fun equals(other: Any?): Boolean {
         if (other !is KtSoupNode) return false
         return nodePtr == other.nodePtr
     }
 
-    override fun hashCode(): Int {
+    actual override fun hashCode(): Int {
         return nodePtr.hashCode()
     }
 
-    override fun toString(): String {
+    actual override fun toString(): String {
         return nodeName()
     }
 }

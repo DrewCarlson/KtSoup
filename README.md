@@ -6,7 +6,6 @@ A multiplatform HTML5 parsing library built on [Lexbor](https://github.com/lexbo
 
 TODO:
  - Finalize initial API surface
- - Add JS target
  - Add test workflows
  - Add documentation and publishing workflows
  - Extra: Add all-in-one fetch and parse API using Ktor

@@ -16,17 +16,16 @@
  */
 package ktsoup
 
-public expect open class KtSoupNode {
+import ktsoup.nodehtmlparser.HTMLElement
+import ktsoup.nodehtmlparser.Node
+import ktsoup.nodehtmlparser.TextNode
 
-    public fun nodeType(): KtSoupNodeType
-    public fun nodeName(): String
-    public fun textContent(): String
-    public fun html(): String
-    public fun child(index: Int): KtSoupNode?
-    public fun children(): List<KtSoupNode>
-    public fun parent(): KtSoupNode?
-
-    override fun toString(): String
-    override fun hashCode(): Int
-    override fun equals(other: Any?): Boolean
+// https://github.com/taoqf/node-html-parser/blob/a439a96d3b7e934f13e5795f5d16ad4a2a10da3c/src/nodes/type.ts
+internal fun Node.wrap(): KtSoupNode {
+    return when (nodeType) {
+        1 -> KtSoupElement(this.unsafeCast<HTMLElement>())
+        3 -> KtSoupText(this.unsafeCast<TextNode>())
+        // 8 -> KtSoupComment(this)
+        else -> KtSoupElement(this.unsafeCast<HTMLElement>())
+    }
 }

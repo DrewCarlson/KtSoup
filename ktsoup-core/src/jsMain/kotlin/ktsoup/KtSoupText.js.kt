@@ -16,17 +16,6 @@
  */
 package ktsoup
 
-public expect open class KtSoupNode {
+import ktsoup.nodehtmlparser.TextNode
 
-    public fun nodeType(): KtSoupNodeType
-    public fun nodeName(): String
-    public fun textContent(): String
-    public fun html(): String
-    public fun child(index: Int): KtSoupNode?
-    public fun children(): List<KtSoupNode>
-    public fun parent(): KtSoupNode?
-
-    override fun toString(): String
-    override fun hashCode(): Int
-    override fun equals(other: Any?): Boolean
-}
+public actual class KtSoupText internal constructor(text: TextNode) : KtSoupNode(text)

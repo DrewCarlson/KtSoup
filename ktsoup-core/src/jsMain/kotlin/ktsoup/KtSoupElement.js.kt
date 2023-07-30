@@ -16,31 +16,35 @@
  */
 package ktsoup
 
-import org.jsoup.nodes.Element
+import ktsoup.nodehtmlparser.HTMLElement
 
 public actual class KtSoupElement internal constructor(
-    private val element: Element,
+    private val element: HTMLElement,
 ) : KtSoupNode(element) {
     public actual fun id(): String? {
-        return element.id().takeUnless(String::isEmpty)
+        return element.getAttribute("id").takeUnless(String::isEmpty)
     }
 
     public actual fun className(): String? {
-        return element.className().takeUnless(String::isEmpty)
+        return element.getAttribute("class").takeUnless(String::isEmpty)
     }
 
     public actual fun tagName(): String {
-        return element.tagName()
+        return element.tagName
     }
 
     public actual fun attr(name: String): String? {
-        return element.attr(name).takeUnless(String::isEmpty)
+        return element.getAttribute(name)
     }
 
+    @Suppress("UNUSED_VARIABLE")
     public actual fun attrs(): Map<String, String> {
-        return buildMap(element.attributesSize()) {
-            element.attributes().forEach { attr ->
-                put(attr.key, attr.value)
+        // Capture element locally or name will be mangled in `js(...)`
+        val e = element
+        val keys = js("Object.keys(e.attributes)").unsafeCast<Array<String>>()
+        return buildMap(keys.size) {
+            keys.forEach { key ->
+                put(key, element.getAttribute(key))
             }
         }
     }

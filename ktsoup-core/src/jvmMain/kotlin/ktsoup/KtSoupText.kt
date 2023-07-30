@@ -18,4 +18,6 @@ package ktsoup
 
 import org.jsoup.nodes.TextNode
 
-public actual class KtSoupText(text: TextNode) : KtSoupNode(text)
+public actual class KtSoupText internal constructor(
+    text: TextNode,
+) : KtSoupNode(text)

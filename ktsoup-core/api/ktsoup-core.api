@@ -12,7 +12,6 @@ public final class ktsoup/KtSoupDocument {
 }
 
 public final class ktsoup/KtSoupElement : ktsoup/KtSoupNode {
-	public fun <init> (Lorg/jsoup/nodes/Element;)V
 	public final fun attr (Ljava/lang/String;)Ljava/lang/String;
 	public final fun attrs ()Ljava/util/Map;
 	public final fun className ()Ljava/lang/String;
@@ -21,14 +20,16 @@ public final class ktsoup/KtSoupElement : ktsoup/KtSoupNode {
 }
 
 public class ktsoup/KtSoupNode {
-	public fun <init> (Lorg/jsoup/nodes/Node;)V
 	public final fun child (I)Lktsoup/KtSoupNode;
 	public final fun children ()Ljava/util/List;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
 	public final fun html ()Ljava/lang/String;
 	public final fun nodeName ()Ljava/lang/String;
 	public final fun nodeType ()Lktsoup/KtSoupNodeType;
 	public final fun parent ()Lktsoup/KtSoupNode;
 	public final fun textContent ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class ktsoup/KtSoupNodeType : java/lang/Enum {
@@ -52,6 +53,5 @@ public final class ktsoup/KtSoupNodeType : java/lang/Enum {
 }
 
 public final class ktsoup/KtSoupText : ktsoup/KtSoupNode {
-	public fun <init> (Lorg/jsoup/nodes/TextNode;)V
 }
 

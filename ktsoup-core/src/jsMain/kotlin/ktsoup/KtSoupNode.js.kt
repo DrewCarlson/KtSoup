@@ -16,68 +16,63 @@
  */
 package ktsoup
 
-import org.jsoup.nodes.Comment
-import org.jsoup.nodes.Document
-import org.jsoup.nodes.DocumentType
-import org.jsoup.nodes.Element
-import org.jsoup.nodes.Node
-import org.jsoup.nodes.TextNode
-import java.lang.IndexOutOfBoundsException
+import ktsoup.nodehtmlparser.HTMLElement
+import ktsoup.nodehtmlparser.Node
 
 public actual open class KtSoupNode internal constructor(
     private val node: Node,
 ) {
+    // https://github.com/taoqf/node-html-parser/blob/a439a96d3b7e934f13e5795f5d16ad4a2a10da3c/src/nodes/type.ts
     public actual fun nodeType(): KtSoupNodeType {
-        return when (node) {
-            is Document -> KtSoupNodeType.DOCUMENT
-            is DocumentType -> KtSoupNodeType.DOCUMENT_TYPE
-            is Element -> KtSoupNodeType.ELEMENT
-            is TextNode -> KtSoupNodeType.TEXT
-            is Comment -> KtSoupNodeType.COMMENT
+        return when (node.nodeType) {
+            1 -> KtSoupNodeType.ELEMENT
+            3 -> KtSoupNodeType.TEXT
+            8 -> KtSoupNodeType.COMMENT
             else -> KtSoupNodeType.UNDEF
         }
     }
 
     public actual fun nodeName(): String {
-        return node.nodeName().uppercase()
+        return asHtmlElement()?.tagName?.uppercase() ?: "TEXT"
     }
 
     public actual fun textContent(): String {
-        return (node as? Element)?.text()
-            ?: (node as? TextNode)?.text()
-            ?: ""
+        return node.textContent
     }
 
     public actual fun html(): String {
-        return node.outerHtml()
+        return asHtmlElement()?.outerHTML ?: node.textContent
     }
 
     public actual fun child(index: Int): KtSoupNode? {
-        return try {
-            node.childNode(index)
-        } catch (e: IndexOutOfBoundsException) {
-            null
-        }?.wrap()
+        return asHtmlElement()?.childNodes?.get(index)?.wrap()
     }
 
     public actual fun children(): List<KtSoupNode> {
-        return node.childNodes().map { it.wrap() }
+        return asHtmlElement()?.childNodes?.map { it.wrap() }.orEmpty()
     }
 
     public actual fun parent(): KtSoupNode? {
-        return node.parentNode()?.wrap()
+        return asHtmlElement()?.parentNode?.wrap()
     }
 
-    actual override fun equals(other: Any?): Boolean {
-        if (other !is KtSoupNode) return false
-        return node == other.node
+    private fun asHtmlElement(): HTMLElement? =
+        if (nodeType() == KtSoupNodeType.ELEMENT) {
+            node.unsafeCast<HTMLElement>()
+        } else {
+            null
+        }
+
+    actual override fun toString(): String {
+        return nodeName()
     }
 
     actual override fun hashCode(): Int {
         return node.hashCode()
     }
 
-    actual override fun toString(): String {
-        return nodeName()
+    actual override fun equals(other: Any?): Boolean {
+        if (other !is KtSoupNode) return false
+        return node == other.node
     }
 }
