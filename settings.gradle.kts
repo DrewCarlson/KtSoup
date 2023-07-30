@@ -12,6 +12,5 @@ plugins {
 rootProject.name = "KtSoup"
 
 include(
-    ":ktsoup-core",
-    ":example"
+    ":ktsoup-core"
 )

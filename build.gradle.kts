@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.kotlinter) apply false
     alias(libs.plugins.spotless)
     alias(libs.plugins.mavenPublish)
+    alias(libs.plugins.downloadPlugin) apply false
 }
 
 version = System.getenv("GITHUB_REF")?.substringAfter("refs/tags/v", version.toString()) ?: version

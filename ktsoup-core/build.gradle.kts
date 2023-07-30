@@ -1,3 +1,4 @@
+import de.undercouch.gradle.tasks.download.Download
 import org.gradle.internal.os.OperatingSystem
 import org.jetbrains.kotlin.konan.target.KonanTarget
 import java.io.File
@@ -5,6 +6,7 @@ import java.io.File
 plugins {
     kotlin("multiplatform")
     id("org.jetbrains.kotlinx.binary-compatibility-validator")
+    id("de.undercouch.download")
 }
 
 val lexborSourcePath = rootProject.file("lexbor/source/lexbor").absolutePath
@@ -42,6 +44,7 @@ kotlin {
         )
     ) {
         compilations.getByName("main") {
+            val staticLibPath = rootProject.file("lexbor-bin/${konanTarget.name}").absolutePath
             val lexbor by cinterops.creating {
                 packageName("lexbor")
                 includeDirs("$lexborSourcePath/..")
@@ -63,7 +66,7 @@ kotlin {
                 compilerOpts("-DLEXBOR_BUILDING", "-DLEXBOR_STATIC")
                 fun applyExtraOpts() {
                     extraOpts(
-                        "-libraryPath", rootProject.file("lexbor-bin/${targetName}").absolutePath,
+                        "-libraryPath", staticLibPath,
                         "-staticLibrary", "liblexbor_static.a",
                         "-compiler-options", "-std=c99"
                     )
@@ -78,19 +81,34 @@ kotlin {
                             applyExtraOpts()
                         }
                     }
+
                     KonanTarget.LINUX_ARM64,
                     KonanTarget.LINUX_X64 -> {
                         if (OperatingSystem.current().isLinux) {
                             applyExtraOpts()
                         }
                     }
+
                     KonanTarget.MINGW_X64 -> {
                         if (OperatingSystem.current().isWindows) {
                             applyExtraOpts()
                         }
                     }
+
                     else -> Unit
                 }
+                val downloadTask = tasks.register<Download>("downloadLiblexbor${konanTarget.name}") {
+                    enabled = !File(staticLibPath).exists()
+                    src("https://github.com/DrewCarlson/KtSoup/releases/download/lexbor-v${libs.versions.lexbor.get()}/${konanTarget.name}.zip")
+                    dest(buildDir.resolve("${konanTarget.name}.zip"))
+                }
+                val extractTask = tasks.register<Copy>("extractLiblexbor${konanTarget.name}") {
+                    enabled = !File(staticLibPath).exists()
+                    dependsOn(downloadTask.get())
+                    from(zipTree(downloadTask.get().dest))
+                    into(rootProject.file("lexbor-bin").absolutePath)
+                }
+                tasks.getByName(interopProcessingTaskName).dependsOn(extractTask)
             }
         }
     }

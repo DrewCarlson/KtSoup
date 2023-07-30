@@ -6,7 +6,6 @@ A multiplatform HTML5 parsing library built on [Lexbor](https://github.com/lexbo
 
 TODO:
  - Finalize initial API surface
- - Add Lexbor build workflow
  - Add Jvm and JS targets
  - Add test workflows
  - Add documentation and publishing workflows
