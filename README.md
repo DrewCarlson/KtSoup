@@ -46,8 +46,6 @@ document.use { document ->
 ![](https://img.shields.io/static/v1?label=&message=macOS&color=blue)
 ![](https://img.shields.io/static/v1?label=&message=Windows&color=blue)
 ![](https://img.shields.io/static/v1?label=&message=iOS&color=blue)
-![](https://img.shields.io/static/v1?label=&message=tvOS&color=blue)
-![](https://img.shields.io/static/v1?label=&message=watchOS&color=blue)
 
 ```kotlin
 repositories {
