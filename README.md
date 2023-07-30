@@ -5,7 +5,7 @@
 ![](https://github.com/DrewCarlson/TorrentSearch-Kotlin/workflows/Js%20Tests/badge.svg)
 ![](https://github.com/DrewCarlson/TorrentSearch-Kotlin/workflows/Native%20Tests/badge.svg)
 
-A multiplatform HTML5 parsing library built on [Lexbor](https://github.com/lexbor/lexbor) and [Jsoup](https://jsoup.org/).
+A multiplatform HTML5 parsing library built on [Lexbor](https://github.com/lexbor/lexbor), [Jsoup](https://jsoup.org/), and [node-html-parser](https://github.com/taoqf/node-html-parser).
 
 TODO:
  - Finalize initial API surface
