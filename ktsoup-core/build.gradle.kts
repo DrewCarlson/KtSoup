@@ -44,7 +44,8 @@ kotlin {
         )
     ) {
         compilations.getByName("main") {
-            val staticLibPath = rootProject.file("lexbor-bin/${konanTarget.name}").absolutePath
+            val nativeTargetName = konanTarget.name.replace("_simulator", "")
+            val staticLibPath = rootProject.file("lexbor-bin/${nativeTargetName}").absolutePath
             val lexbor by cinterops.creating {
                 packageName("lexbor")
                 includeDirs("$lexborSourcePath/..")
@@ -76,33 +77,18 @@ kotlin {
                     KonanTarget.IOS_SIMULATOR_ARM64,
                     KonanTarget.IOS_X64,
                     KonanTarget.MACOS_ARM64,
-                    KonanTarget.MACOS_X64 -> {
-                        if (OperatingSystem.current().isMacOsX) {
-                            applyExtraOpts()
-                        }
-                    }
-
+                    KonanTarget.MACOS_X64 -> if (OperatingSystem.current().isMacOsX) applyExtraOpts()
                     KonanTarget.LINUX_ARM64,
-                    KonanTarget.LINUX_X64 -> {
-                        if (OperatingSystem.current().isLinux) {
-                            applyExtraOpts()
-                        }
-                    }
-
-                    KonanTarget.MINGW_X64 -> {
-                        if (OperatingSystem.current().isWindows) {
-                            applyExtraOpts()
-                        }
-                    }
-
+                    KonanTarget.LINUX_X64 -> if (OperatingSystem.current().isLinux) applyExtraOpts()
+                    KonanTarget.MINGW_X64 -> if (OperatingSystem.current().isWindows) applyExtraOpts()
                     else -> Unit
                 }
-                val downloadTask = tasks.register<Download>("downloadLiblexbor${konanTarget.name}") {
+                val downloadTask = tasks.register<Download>("downloadLiblexbor${nativeTargetName}") {
                     enabled = !File(staticLibPath).exists()
-                    src("https://github.com/DrewCarlson/KtSoup/releases/download/lexbor-v${libs.versions.lexbor.get()}/${konanTarget.name}.zip")
-                    dest(buildDir.resolve("${konanTarget.name}.zip"))
+                    src("https://github.com/DrewCarlson/KtSoup/releases/download/lexbor-v${libs.versions.lexbor.get()}/${nativeTargetName}.zip")
+                    dest(buildDir.resolve("${nativeTargetName}.zip"))
                 }
-                val extractTask = tasks.register<Copy>("extractLiblexbor${konanTarget.name}") {
+                val extractTask = tasks.register<Copy>("extractLiblexbor${nativeTargetName}") {
                     enabled = !File(staticLibPath).exists()
                     dependsOn(downloadTask.get())
                     from(zipTree(downloadTask.get().dest))
@@ -129,6 +115,8 @@ kotlin {
         }
         //val jvmMain by getting
         //val jvmTest by getting
+        //val jsMain by getting
+        //val jsTest by getting
 
         val nativeMain by creating {
             dependsOn(commonMain)
