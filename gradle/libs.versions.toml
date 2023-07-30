@@ -1,0 +1,26 @@
+[versions]
+kotlin = { strictly = "1.9.0" }
+dokka = "1.8.20"
+ktorio = "2.3.2"
+binary_compat = "0.13.2"
+kover = "0.7.3"
+spotless = "6.19.0"
+
+[plugins]
+multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
+binaryCompat = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binary_compat" }
+kotlinter = { id = "org.jmailen.kotlinter", version = "3.15.0" }
+mavenPublish = { id = "com.vanniktech.maven.publish", version = "0.25.3" }
+
+[libraries]
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktorio" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktorio" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktorio" }
+ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktorio" }
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktorio" }
+ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktorio" }
+ktor-client-curl = { module = "io.ktor:ktor-client-curl", version.ref = "ktorio" }
