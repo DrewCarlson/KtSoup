@@ -161,7 +161,7 @@ kotlin {
             val iosSimulatorArm64Main by getting { dependsOn(nativeMain) }
             val iosSimulatorArm64Test by getting { dependsOn(nativeTest) }
             val iosArm64Main by getting { dependsOn(nativeMain) }
-            val iosArmTest by getting { dependsOn(nativeTest) }
+            val iosArm64Test by getting { dependsOn(nativeTest) }
             val iosX64Main by getting { dependsOn(nativeMain) }
             val iosX64Test by getting { dependsOn(nativeTest) }
         }
