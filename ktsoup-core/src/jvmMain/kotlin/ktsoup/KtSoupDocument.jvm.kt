@@ -53,6 +53,7 @@ public actual class KtSoupDocument {
     }
 
     public actual fun close() {
+        document = null
     }
 
     public actual inline fun <R> use(crossinline block: (KtSoupDocument) -> R): R {
