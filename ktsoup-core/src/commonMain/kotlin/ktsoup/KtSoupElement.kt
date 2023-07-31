@@ -16,11 +16,43 @@
  */
 package ktsoup
 
+/**
+ * A DOM element from a [KtSoupDocument].
+ */
 public expect class KtSoupElement : KtSoupNode {
 
+    /**
+     * Get the `id` attribute value or null if there is no `id` attribute.
+     *
+     * @return The `id` attribute value or null.
+     */
     public fun id(): String?
+
+    /**
+     * Get the `class` attribute value or null if there is no `class` attribute.
+     *
+     * @return The `class` attribute value or null.
+     */
     public fun className(): String?
+
+    /**
+     * Get the tag name of this element.
+     *
+     * @return The tag name.
+     */
     public fun tagName(): String
+
+    /**
+     * Get the [name] attribute value or null if the attribute is missing.
+     *
+     * @return The [name] attribute value or null.
+     */
     public fun attr(name: String): String?
+
+    /**
+     * Get all attributes for this element.
+     *
+     * @return A map of attribute keys to their value.
+     */
     public fun attrs(): Map<String, String>
 }

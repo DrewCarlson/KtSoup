@@ -46,7 +46,7 @@ public actual open class KtSoupNode(
         val len = alloc<size_tVar>()
         lxb_dom_node_name(nodePtr, len.ptr)
             ?.toKStringFromUtf8(len.value)
-            .orEmpty()
+            ?: nodeType().name
     }
 
     public actual fun textContent(): String = memScoped {

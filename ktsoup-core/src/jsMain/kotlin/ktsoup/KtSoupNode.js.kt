@@ -33,7 +33,7 @@ public actual open class KtSoupNode internal constructor(
     }
 
     public actual fun nodeName(): String {
-        return asHtmlElement()?.tagName?.uppercase() ?: "TEXT"
+        return asHtmlElement()?.tagName?.uppercase() ?: nodeType().name
     }
 
     public actual fun textContent(): String {
