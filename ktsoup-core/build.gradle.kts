@@ -159,7 +159,7 @@ kotlin {
             val macosX64Main by getting { dependsOn(nativeMain) }
             val macosX64Test by getting { dependsOn(nativeTest) }
             val iosSimulatorArm64Main by getting { dependsOn(nativeMain) }
-            val iosSimulatorArmTest by getting { dependsOn(nativeTest) }
+            val iosSimulatorArm64Test by getting { dependsOn(nativeTest) }
             val iosArm64Main by getting { dependsOn(nativeMain) }
             val iosArmTest by getting { dependsOn(nativeTest) }
             val iosX64Main by getting { dependsOn(nativeMain) }
