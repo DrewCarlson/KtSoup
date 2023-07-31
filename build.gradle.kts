@@ -27,7 +27,9 @@ allprojects {
 
 subprojects {
     apply(plugin = "org.jetbrains.kotlinx.kover")
-    kover {}
+    configure<kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension> {
+    }
+    rootProject.dependencies.add("kover", project(path))
 
     apply(plugin = "com.diffplug.spotless")
     configure<SpotlessExtension> {

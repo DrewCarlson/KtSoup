@@ -1,0 +1,159 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  macos-tests:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 11
+      - name: Cache Build files
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.konan
+            ~/.gradle
+          key: ${{ runner.os }}-${{ hashFiles('gradle.properties') }}-v1
+
+      - uses: gradle/gradle-build-action@v2
+        name: JVM Test
+        with:
+          arguments: jvmTest
+
+      - uses: gradle/gradle-build-action@v2
+        name: macos x64 Test
+        with:
+          arguments: macosX64Test
+
+      - uses: gradle/gradle-build-action@v2
+        name: Kover report
+        with:
+          arguments: koverXmlReport
+
+      - name: Archive Reports
+        uses: actions/upload-artifact@v3
+        if: ${{ always() }}
+        with:
+          name: reports
+          path: '**/build/reports/*'
+
+      - name: Archive Test Results
+        uses: actions/upload-artifact@v3
+        if: ${{ always() }}
+        with:
+          name: test-results-macos
+          path: '**/TEST-*.xml'
+
+  windows-tests:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 11
+
+      - uses: gradle/gradle-build-action@v2
+        name: Test Windows Target
+        with:
+          arguments: mingwX64Test
+
+      - name: Archive Reports
+        uses: actions/upload-artifact@v3
+        if: ${{ always() }}
+        with:
+          name: reports
+          path: '**/build/reports/*'
+
+      - name: Archive Test Results
+        uses: actions/upload-artifact@v3
+        if: ${{ always() }}
+        with:
+          name: test-results-windows
+          path: '**/TEST-*.xml'
+
+  linux-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 11
+      - name: Cache Build files
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.konan
+            ~/.gradle
+          key: ${{ runner.os }}-${{ hashFiles('gradle.properties') }}-v1
+
+      - uses: gradle/gradle-build-action@v2
+        name: JS Tests
+        with:
+          arguments: jsTest
+
+      - uses: gradle/gradle-build-action@v2
+        name: Linux x64 Tests
+        with:
+          arguments: linuxX64Test
+
+      - name: Archive Reports
+        uses: actions/upload-artifact@v3
+        if: ${{ always() }}
+        with:
+          name: reports
+          path: '**/build/reports/*'
+
+      - name: Archive Test Results
+        uses: actions/upload-artifact@v3
+        if: ${{ always() }}
+        with:
+          name: test-results-ubuntu
+          path: '**/TEST-*.xml'
+
+  upload-kover-reports:
+    runs-on: ubuntu-latest
+    needs: [ macos-tests ]
+    steps:
+      - uses: actions/checkout@master
+      - name: Download kover reports
+        uses: actions/download-artifact@v3
+        with:
+          name: reports
+      - uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        with:
+          files: "build/reports/kover/report.xml"
+
+  upload-junit-results:
+    runs-on: ubuntu-latest
+    needs: [ linux-tests, macos-tests, windows-tests ]
+    if: ${{ always() }}
+    steps:
+      - name: Download test results
+        uses: actions/download-artifact@v3
+      - name: Publish Unit Test Results
+        uses: mikepenz/action-junit-report@v3
+        if: ${{ always() }}
+        with:
+          report_paths: '**/TEST-*.xml'
