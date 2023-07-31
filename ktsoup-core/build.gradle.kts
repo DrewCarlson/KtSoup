@@ -47,7 +47,7 @@ kotlin {
         )
     ) {
         compilations.getByName("main") {
-            val nativeTargetName = konanTarget.name.replace("_simulator", "")
+            val nativeTargetName = konanTarget.name
             val staticLibPath = rootProject.file("lexbor-bin/${nativeTargetName}")
             val lexbor by cinterops.creating {
                 packageName("lexbor")
