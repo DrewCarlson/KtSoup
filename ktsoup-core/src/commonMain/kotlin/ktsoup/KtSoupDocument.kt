@@ -91,5 +91,5 @@ public expect class KtSoupDocument() {
      *
      * @return The [R] value returned from [block]
      */
-    public fun <R> use(block: (KtSoupDocument) -> R): R
+    public inline fun <R> use(crossinline block: (KtSoupDocument) -> R): R
 }

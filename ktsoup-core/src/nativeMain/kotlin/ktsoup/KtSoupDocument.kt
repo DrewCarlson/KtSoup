@@ -128,7 +128,7 @@ public actual class KtSoupDocument {
         }
     }
 
-    public actual fun <R> use(block: (KtSoupDocument) -> R): R {
+    public actual inline fun <R> use(crossinline block: (KtSoupDocument) -> R): R {
         return try {
             block(this)
         } finally {
