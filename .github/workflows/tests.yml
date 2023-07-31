@@ -40,6 +40,11 @@ jobs:
           arguments: macosX64Test
 
       - uses: gradle/gradle-build-action@v2
+        name: ios x64 Test
+        with:
+          arguments: iosX64Test
+
+      - uses: gradle/gradle-build-action@v2
         name: Kover report
         with:
           arguments: koverXmlReport
