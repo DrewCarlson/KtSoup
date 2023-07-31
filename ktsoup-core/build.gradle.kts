@@ -86,18 +86,24 @@ kotlin {
                     KonanTarget.MINGW_X64 -> if (OperatingSystem.current().isWindows) applyExtraOpts()
                     else -> Unit
                 }
-                val downloadTask = tasks.register<Download>("downloadLiblexbor${nativeTargetName}") {
-                    enabled = !staticLibPath.exists()
-                    src("https://github.com/DrewCarlson/KtSoup/releases/download/lexbor-v${libs.versions.lexbor.get()}/${nativeTargetName}.zip")
-                    dest(buildDir.resolve("${nativeTargetName}.zip"))
+                val downloadTaskName = "downloadLiblexbor${nativeTargetName}"
+                val extractTaskName = "extractLiblexbor${nativeTargetName}"
+                if (tasks.none { it.name == downloadTaskName }) {
+                    val downloadTask = tasks.register<Download>("downloadLiblexbor${nativeTargetName}") {
+                        enabled = !staticLibPath.exists()
+                        src("https://github.com/DrewCarlson/KtSoup/releases/download/lexbor-v${libs.versions.lexbor.get()}/${nativeTargetName}.zip")
+                        dest(buildDir.resolve("${nativeTargetName}.zip"))
+                    }
+                    val extractTask = tasks.register<Copy>("extractLiblexbor${nativeTargetName}") {
+                        enabled = !staticLibPath.exists()
+                        dependsOn(downloadTask.get())
+                        from(zipTree(downloadTask.get().dest))
+                        into(rootProject.file("lexbor-bin").absolutePath)
+                    }
+                    tasks.getByName(interopProcessingTaskName).dependsOn(extractTask)
+                } else {
+                    tasks.getByName(interopProcessingTaskName).dependsOn(extractTaskName)
                 }
-                val extractTask = tasks.register<Copy>("extractLiblexbor${nativeTargetName}") {
-                    enabled = !staticLibPath.exists()
-                    dependsOn(downloadTask.get())
-                    from(zipTree(downloadTask.get().dest))
-                    into(rootProject.file("lexbor-bin").absolutePath)
-                }
-                tasks.getByName(interopProcessingTaskName).dependsOn(extractTask)
             }
         }
     }
