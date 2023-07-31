@@ -2,6 +2,7 @@ set(CMAKE_SYSTEM_NAME Darwin)
 set(CMAKE_SYSTEM_PROCESSOR x86_64)
 
 set(CMAKE_OSX_ARCHITECTURES x86_64)
+set(CMAKE_XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH NO)
 
 execute_process(
     COMMAND xcrun --sdk macosx --show-sdk-path
