@@ -81,29 +81,27 @@ kotlin {
                     KonanTarget.IOS_X64,
                     KonanTarget.MACOS_ARM64,
                     KonanTarget.MACOS_X64 -> if (OperatingSystem.current().isMacOsX) applyExtraOpts()
+
                     KonanTarget.LINUX_ARM64,
                     KonanTarget.LINUX_X64 -> if (!OperatingSystem.current().isWindows) applyExtraOpts()
+
                     KonanTarget.MINGW_X64 -> if (OperatingSystem.current().isWindows) applyExtraOpts()
                     else -> Unit
                 }
                 val downloadTaskName = "downloadLiblexbor${nativeTargetName}"
                 val extractTaskName = "extractLiblexbor${nativeTargetName}"
-                if (tasks.none { it.name == downloadTaskName }) {
-                    val downloadTask = tasks.register<Download>(downloadTaskName) {
-                        enabled = !staticLibPath.exists()
-                        src("https://github.com/DrewCarlson/KtSoup/releases/download/lexbor-v${libs.versions.lexbor.get()}/${nativeTargetName}.zip")
-                        dest(buildDir.resolve("${nativeTargetName}.zip"))
-                    }
-                    val extractTask = tasks.register<Copy>(extractTaskName) {
-                        enabled = !staticLibPath.exists()
-                        dependsOn(downloadTask.get())
-                        from(zipTree(downloadTask.get().dest))
-                        into(rootProject.file("lexbor-bin").absolutePath)
-                    }
-                    tasks.getByName(interopProcessingTaskName).dependsOn(extractTask)
-                } else {
-                    tasks.getByName(interopProcessingTaskName).dependsOn(extractTaskName)
+                val downloadTask = tasks.register<Download>(downloadTaskName) {
+                    enabled = !staticLibPath.exists()
+                    src("https://github.com/DrewCarlson/KtSoup/releases/download/lexbor-v${libs.versions.lexbor.get()}/${nativeTargetName}.zip")
+                    dest(buildDir.resolve("${nativeTargetName}.zip"))
                 }
+                val extractTask = tasks.register<Copy>(extractTaskName) {
+                    enabled = !staticLibPath.exists()
+                    dependsOn(downloadTask.get())
+                    from(zipTree(downloadTask.get().dest))
+                    into(rootProject.file("lexbor-bin").absolutePath)
+                }
+                tasks.getByName(interopProcessingTaskName).dependsOn(extractTask)
             }
         }
     }
