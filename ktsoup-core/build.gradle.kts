@@ -89,12 +89,12 @@ kotlin {
                 val downloadTaskName = "downloadLiblexbor${nativeTargetName}"
                 val extractTaskName = "extractLiblexbor${nativeTargetName}"
                 if (tasks.none { it.name == downloadTaskName }) {
-                    val downloadTask = tasks.register<Download>("downloadLiblexbor${nativeTargetName}") {
+                    val downloadTask = tasks.register<Download>(downloadTaskName) {
                         enabled = !staticLibPath.exists()
                         src("https://github.com/DrewCarlson/KtSoup/releases/download/lexbor-v${libs.versions.lexbor.get()}/${nativeTargetName}.zip")
                         dest(buildDir.resolve("${nativeTargetName}.zip"))
                     }
-                    val extractTask = tasks.register<Copy>("extractLiblexbor${nativeTargetName}") {
+                    val extractTask = tasks.register<Copy>(extractTaskName) {
                         enabled = !staticLibPath.exists()
                         dependsOn(downloadTask.get())
                         from(zipTree(downloadTask.get().dest))
