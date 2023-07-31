@@ -28,6 +28,7 @@ allprojects {
 subprojects {
     apply(plugin = "org.jetbrains.kotlinx.kover")
     configure<kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension> {
+        useJacoco()
     }
     rootProject.dependencies.add("kover", project(path))
 
