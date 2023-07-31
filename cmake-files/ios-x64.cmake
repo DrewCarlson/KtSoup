@@ -12,3 +12,5 @@ execute_process(
 )
 
 set(CMAKE_OSX_SYSROOT ${IOS_SIMULATOR_SDK_PATH})
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -target x86_64-apple-ios-simulator")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -target x86_64-apple-ios-simulator")
