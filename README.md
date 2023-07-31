@@ -2,6 +2,7 @@
 
 ![Maven Central](https://img.shields.io/maven-central/v/org.drewcarlson/ksoup-core-jvm?label=maven&color=blue)
 ![](https://github.com/DrewCarlson/KtSoup/workflows/Tests/badge.svg)
+[![codecov](https://codecov.io/gh/DrewCarlson/KtSoup/branch/main/graph/badge.svg?token=BTQ8XQOD86)](https://codecov.io/gh/DrewCarlson/KtSoup)
 
 A multiplatform HTML5 parsing library built on [Lexbor](https://github.com/lexbor/lexbor), [Jsoup](https://jsoup.org/), and [node-html-parser](https://github.com/taoqf/node-html-parser).
 
