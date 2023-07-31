@@ -99,7 +99,7 @@ jobs:
       - name: Archive production artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: ios_arm64
+          name: ios_simulator_arm64
           path: lexbor/install/lib/liblexbor_static.a
 
   build-ios-x64:
