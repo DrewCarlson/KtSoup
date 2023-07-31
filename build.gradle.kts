@@ -46,4 +46,6 @@ subprojects {
     tasks.withType<SpotlessApply> {
         dependsOn("formatKotlin")
     }
+
+    apply(plugin = "org.jetbrains.dokka")
 }

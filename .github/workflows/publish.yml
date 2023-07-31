@@ -1,0 +1,65 @@
+name: Publish
+
+on:
+  push:
+    tags: [ 'v*' ]
+    branches: [ main ]
+
+env:
+  ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.ORG_GRADLE_PROJECT_signingInMemoryKey }}
+  ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.ORG_GRADLE_PROJECT_signingInMemoryKeyPassword }}
+  ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.ORG_GRADLE_PROJECT_mavenCentralPassword }}
+  ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.ORG_GRADLE_PROJECT_mavenCentralUsername }}
+
+jobs:
+  publish:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 11
+      - name: Cache Build files
+        uses: actions/cache@v3
+        if: ${{ !startsWith(matrix.os, 'windows') }}
+        with:
+          path: |
+            ~/.konan
+            ~/.gradle
+          key: ${{ runner.os }}-${{ hashFiles('gradle.properties') }}-v1
+      - uses: gradle/gradle-build-action@v2
+        name: Publish
+        with:
+          arguments: clean publishAllPublicationsToMavenCentralRepository
+
+  publish-docs:
+    name: Publish KDoc to Github Pages
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 11
+
+      - name: Cache Build files
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.konan
+            ~/.gradle
+          key: ${{ runner.os }}-${{ hashFiles('gradle.properties') }}
+
+      - uses: gradle/gradle-build-action@v2
+        name: Build Docs
+        with:
+          arguments: clean dokkaHtmlMultiModule
+
+      - name: Publish Docs
+        uses: JamesIves/github-pages-deploy-action@v4.4.3
+        with:
+          branch: docs
+          folder: build/dokka/htmlMultiModule
+          single-commit: true
