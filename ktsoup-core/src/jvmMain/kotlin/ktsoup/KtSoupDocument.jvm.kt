@@ -29,27 +29,27 @@ public actual class KtSoupDocument {
     }
 
     public actual fun title(): String {
-        return checkNotNull(document).title()
+        return checkDocument().title()
     }
 
     public actual fun body(): KtSoupElement? {
-        return KtSoupElement(checkNotNull(document).body())
+        return KtSoupElement(checkDocument().body())
     }
 
     public actual fun head(): KtSoupElement? {
-        return KtSoupElement(checkNotNull(document).head())
+        return KtSoupElement(checkDocument().head())
     }
 
     public actual fun getElementById(id: String): KtSoupElement? {
-        return checkNotNull(document).getElementById(id)?.let { KtSoupElement(it) }
+        return checkDocument().getElementById(id)?.let { KtSoupElement(it) }
     }
 
     public actual fun getElementsByClass(className: String): List<KtSoupElement> {
-        return checkNotNull(document).getElementsByClass(className).map { KtSoupElement(it) }
+        return checkDocument().getElementsByClass(className).map { KtSoupElement(it) }
     }
 
     public actual fun getElementsByTagName(tagName: String): List<KtSoupElement> {
-        return checkNotNull(document).getElementsByTag(tagName).map { KtSoupElement(it) }
+        return checkDocument().getElementsByTag(tagName).map { KtSoupElement(it) }
     }
 
     public actual fun close() {
@@ -61,5 +61,9 @@ public actual class KtSoupDocument {
         } finally {
             close()
         }
+    }
+
+    private fun checkDocument(): Document {
+        return checkNotNull(document) { ERROR_CALL_PARSE_FIRST }
     }
 }

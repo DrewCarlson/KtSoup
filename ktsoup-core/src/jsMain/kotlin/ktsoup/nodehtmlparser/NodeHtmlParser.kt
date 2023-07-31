@@ -54,7 +54,7 @@ internal external class HTMLElement : Node {
     val parentNode: Node
     val childNodes: Array<Node>
 
-    fun getElementById(id: String): HTMLElement
+    fun getElementById(id: String): HTMLElement?
     fun getElementsByTagName(tagName: String): Array<HTMLElement>
     fun querySelectorAll(selector: String): Array<Node>
     fun querySelector(selector: String): Node

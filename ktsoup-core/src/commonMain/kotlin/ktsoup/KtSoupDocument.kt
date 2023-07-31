@@ -16,6 +16,8 @@
  */
 package ktsoup
 
+internal const val ERROR_CALL_PARSE_FIRST = "`parse(html)` must be called before using a KtSoupDocument."
+
 public expect class KtSoupDocument() {
 
     public fun parse(html: String): Boolean

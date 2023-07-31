@@ -39,17 +39,16 @@ public actual class KtSoupDocument actual constructor() {
     }
 
     public actual fun getElementById(id: String): KtSoupElement? {
-        return document?.getElementById(id)?.let { KtSoupElement(it) }
+        return checkDocument().getElementById(id)?.let { KtSoupElement(it) }
     }
 
     public actual fun getElementsByClass(className: String): List<KtSoupElement> {
-        return document?.querySelectorAll(".$className")
-            ?.map { KtSoupElement(it.unsafeCast<HTMLElement>()) }
-            .orEmpty()
+        return checkDocument().querySelectorAll(".$className")
+            .map { KtSoupElement(it.unsafeCast<HTMLElement>()) }
     }
 
     public actual fun getElementsByTagName(tagName: String): List<KtSoupElement> {
-        return document?.getElementsByTagName(tagName)?.map { KtSoupElement(it) }?.toList().orEmpty()
+        return checkDocument().getElementsByTagName(tagName).map { KtSoupElement(it) }.toList()
     }
 
     public actual fun close() {
@@ -61,5 +60,9 @@ public actual class KtSoupDocument actual constructor() {
         } finally {
             close()
         }
+    }
+
+    private fun checkDocument(): HTMLElement {
+        return checkNotNull(document) { ERROR_CALL_PARSE_FIRST }
     }
 }

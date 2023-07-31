@@ -24,48 +24,47 @@ private const val START_LIST_SIZE = 128uL
 
 public actual class KtSoupDocument {
 
-    private val documentPointer = checkNotNull(lxb_html_document_create()) {
-        "Failed to create document handle: lxb_html_document_create()"
-    }
+    private var documentPointer: CPointer<lxb_html_document_t>? = null
 
     public actual fun parse(html: String): Boolean = memScoped {
+        documentPointer = lxb_html_document_create()
         lxb_html_document_parse(
-            documentPointer,
+            checkDocument(),
             html.cstr.ptr.reinterpret(),
             html.length.convert(),
         ) == LXB_STATUS_OK
     }
 
     public actual fun close() {
-        lxb_html_document_destroy(documentPointer)
+        lxb_html_document_destroy(checkDocument())
     }
 
     public actual fun title(): String = memScoped {
         val len = alloc<size_tVar>()
-        lxb_html_document_title(documentPointer, len.ptr)
+        lxb_html_document_title(checkDocument(), len.ptr)
             ?.toKStringFromUtf8(len.value)
             .orEmpty()
     }
 
     public actual fun body(): KtSoupElement? {
-        return lxb_html_document_body_element(documentPointer)
+        return lxb_html_document_body_element(checkDocument())
             ?.let { KtSoupElement(it.reinterpret()) }
     }
 
     public actual fun head(): KtSoupElement? {
-        return lxb_html_document_head_element(documentPointer)
+        return lxb_html_document_head_element(checkDocument())
             ?.let { KtSoupElement(it.reinterpret()) }
     }
 
     public actual fun getElementById(id: String): KtSoupElement? = memScoped {
         val idQuery = id.cstr
         val attrQuery = "id".cstr
-        val collection = checkNotNull(lxb_dom_collection_make(documentPointer.reinterpret(), START_LIST_SIZE)) {
+        val collection = checkNotNull(lxb_dom_collection_make(checkDocument().reinterpret(), START_LIST_SIZE)) {
             "Failed to create dom collection: lxb_dom_collection_make()"
         }
         defer { lxb_dom_collection_destroy(collection, self_destroy = true) }
         val status = lxb_dom_elements_by_attr(
-            documentPointer.pointed.body?.reinterpret(),
+            checkDocument().pointed.body?.reinterpret(),
             collection,
             attrQuery.ptr.reinterpret(),
             2uL,
@@ -86,9 +85,9 @@ public actual class KtSoupDocument {
     }
 
     public actual fun getElementsByClass(className: String): List<KtSoupElement> = memScoped {
-        val body = documentPointer.pointed.body ?: return emptyList()
+        val body = checkDocument().pointed.body ?: return emptyList()
         val classQuery = className.cstr
-        val collection = lxb_dom_collection_make(documentPointer.reinterpret(), 128u)
+        val collection = lxb_dom_collection_make(checkDocument().reinterpret(), 128u)
             ?: throw RuntimeException("Could not create collection")
         defer { lxb_dom_collection_destroy(collection, self_destroy = true) }
         val status = lxb_dom_elements_by_class_name(
@@ -104,9 +103,9 @@ public actual class KtSoupDocument {
     }
 
     public actual fun getElementsByTagName(tagName: String): List<KtSoupElement> = memScoped {
-        val body = documentPointer.pointed.body ?: return emptyList()
+        val body = checkDocument().pointed.body ?: return emptyList()
         val tagQuery = tagName.cstr
-        val collection = lxb_dom_collection_make(documentPointer.reinterpret(), START_LIST_SIZE)
+        val collection = lxb_dom_collection_make(checkDocument().reinterpret(), START_LIST_SIZE)
             ?: throw RuntimeException("Could not create collection")
         defer { lxb_dom_collection_destroy(collection, self_destroy = true) }
         val status = lxb_dom_elements_by_tag_name(
@@ -135,5 +134,9 @@ public actual class KtSoupDocument {
         } finally {
             close()
         }
+    }
+
+    private fun checkDocument(): CPointer<lxb_html_document_t> {
+        return checkNotNull(documentPointer) { ERROR_CALL_PARSE_FIRST }
     }
 }
