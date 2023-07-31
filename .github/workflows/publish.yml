@@ -40,7 +40,7 @@ jobs:
       - uses: gradle/gradle-build-action@v2
         name: Publish
         with:
-          arguments: clean publishAllPublicationsToMavenCentralRepository
+          arguments: publishAllPublicationsToMavenCentralRepository
 
   publish-docs:
     name: Publish KDoc to Github Pages
