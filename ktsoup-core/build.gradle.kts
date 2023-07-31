@@ -41,6 +41,9 @@ kotlin {
             if (!OperatingSystem.current().isWindows) linuxArm64() else null,
             if (OperatingSystem.current().isMacOsX) macosX64() else null,
             if (OperatingSystem.current().isMacOsX) macosArm64() else null,
+            if (OperatingSystem.current().isMacOsX) iosSimulatorArm64() else null,
+            if (OperatingSystem.current().isMacOsX) iosArm64() else null,
+            if (OperatingSystem.current().isMacOsX) iosX64() else null,
         )
     ) {
         compilations.getByName("main") {
@@ -79,7 +82,7 @@ kotlin {
                     KonanTarget.MACOS_ARM64,
                     KonanTarget.MACOS_X64 -> if (OperatingSystem.current().isMacOsX) applyExtraOpts()
                     KonanTarget.LINUX_ARM64,
-                    KonanTarget.LINUX_X64 -> if (OperatingSystem.current().isLinux) applyExtraOpts()
+                    KonanTarget.LINUX_X64 -> if (!OperatingSystem.current().isWindows) applyExtraOpts()
                     KonanTarget.MINGW_X64 -> if (OperatingSystem.current().isWindows) applyExtraOpts()
                     else -> Unit
                 }
@@ -149,6 +152,12 @@ kotlin {
             val macosArm64Test by getting { dependsOn(nativeTest) }
             val macosX64Main by getting { dependsOn(nativeMain) }
             val macosX64Test by getting { dependsOn(nativeTest) }
+            val iosSimulatorArm64Main by getting { dependsOn(nativeMain) }
+            val iosSimulatorArmTest by getting { dependsOn(nativeTest) }
+            val iosArm64Main by getting { dependsOn(nativeMain) }
+            val iosArmTest by getting { dependsOn(nativeTest) }
+            val iosX64Main by getting { dependsOn(nativeMain) }
+            val iosX64Test by getting { dependsOn(nativeTest) }
         }
         if (!OperatingSystem.current().isWindows) {
             val linuxX64Main by getting { dependsOn(nativeMain) }
