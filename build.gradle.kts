@@ -14,12 +14,6 @@ plugins {
     alias(libs.plugins.downloadPlugin) apply false
 }
 
-System.getenv("GITHUB_REF")?.let { ref ->
-    if (ref.startsWith("refs/tags/v")) {
-        version = ref.substringAfterLast("refs/tags/v")
-    }
-}
-
 allprojects {
     plugins.withType<NodeJsRootPlugin> {
         the<YarnRootExtension>().lockFileDirectory = rootDir.resolve("gradle/kotlin-js-store")
@@ -52,4 +46,10 @@ subprojects {
     }
 
     apply(plugin = "org.jetbrains.dokka")
+}
+
+System.getenv("GITHUB_REF")?.let { ref ->
+    if (ref.startsWith("refs/tags/v")) {
+        version = ref.substringAfterLast("refs/tags/v")
+    }
 }
