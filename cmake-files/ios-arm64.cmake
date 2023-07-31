@@ -12,6 +12,5 @@ execute_process(
 )
 
 set(CMAKE_OSX_SYSROOT ${IOS_SDK_PATH})
-
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -arch arm64")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -arch arm64")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -target arm64-apple-ios")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -target arm64-apple-ios")
