@@ -5,7 +5,6 @@ import java.io.File
 
 plugins {
     kotlin("multiplatform")
-    id("org.jetbrains.kotlinx.binary-compatibility-validator")
     id("de.undercouch.download")
     alias(libs.plugins.mavenPublish)
 }

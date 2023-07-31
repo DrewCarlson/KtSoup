@@ -6,15 +6,19 @@ import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
 plugins {
     alias(libs.plugins.multiplatform) apply false
     alias(libs.plugins.kover)
-    alias(libs.plugins.binaryCompat) apply false
+    alias(libs.plugins.binaryCompat)
     alias(libs.plugins.dokka)
     alias(libs.plugins.kotlinter) apply false
     alias(libs.plugins.spotless)
-    alias(libs.plugins.mavenPublish)
+    alias(libs.plugins.mavenPublish) apply false
     alias(libs.plugins.downloadPlugin) apply false
 }
 
-version = System.getenv("GITHUB_REF")?.substringAfter("refs/tags/v", version.toString()) ?: version
+System.getenv("GITHUB_REF")?.let { ref ->
+    if (ref.startsWith("refs/tags/v")) {
+        version = ref.substringAfterLast("refs/tags/v")
+    }
+}
 
 allprojects {
     plugins.withType<NodeJsRootPlugin> {
