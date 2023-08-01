@@ -18,32 +18,87 @@ package ktsoup
 
 import kotlin.test.*
 
-private const val SIMPLE_DOCUMENT = """
-<html>
-<head>
-<title>Test Title</title>
-</head>
-<body>
-<div id="test-id" class="test-class">Hello World <a href="#">Link</a></div>
-</body>
-</html>
-"""
-
 class KtSoupDocumentTests {
 
     @Test
-    fun test() {
+    fun testDocument_Parse() {
         val document = KtSoupDocument()
         assertTrue(document.parse(SIMPLE_DOCUMENT))
+        document.close()
+    }
+
+    @Test
+    fun testDocument_Head() = withDocument(SIMPLE_DOCUMENT) { document ->
+        val head = assertNotNull(document.head())
+        assertEquals("head", head.tagName())
+    }
+
+    @Test
+    fun testDocument_Body() = withDocument(SIMPLE_DOCUMENT) { document ->
+        val head = assertNotNull(document.body())
+        assertEquals("body", head.tagName())
+    }
+
+    @Test
+    fun testDocument_Title() = withDocument(SIMPLE_DOCUMENT) { document ->
         assertEquals("Test Title", document.title())
-        assertNotNull(document.head())
-        assertNotNull(document.body())
+    }
 
-        // val div = document.getElementsByTagName("div").singleOrNull()
-        // val div = document.getElementsByClass("test-class").singleOrNull()
-        // val div = document.getElementById("test-id")
+    @Test
+    fun testDocument_getElementById() = withDocument(SIMPLE_DOCUMENT) { document ->
+        val div = document.getElementById("test-id")
+        assertNotNull(div)
+        assertIs<KtSoupElement>(div)
+    }
+
+    @Test
+    fun testDocument_getElementsByClass() = withDocument(SIMPLE_DOCUMENT) { document ->
+        val divs = document.getElementsByClass("test-class")
+        assertEquals(1, divs.size)
+        val div = divs.first()
+        assertNotNull(div)
+        assertIs<KtSoupElement>(div)
+    }
+
+    @Test
+    fun testDocument_getElementsByTagName() = withDocument(SIMPLE_DOCUMENT) { document ->
+        val divs = document.getElementsByTagName("div")
+        assertEquals(1, divs.size)
+        val div = divs.first()
+        assertNotNull(div)
+        assertIs<KtSoupElement>(div)
+    }
+
+    @Test
+    fun testDocument_querySelector() = withDocument(SIMPLE_DOCUMENT) { document ->
         val div = document.querySelector("#test-id")
+        assertNotNull(div)
+        assertIs<KtSoupElement>(div)
+    }
 
+    @Test
+    fun testDocument_querySelectorAll() = withDocument(MULTI_ELEMENT_DOCUMENT) { document ->
+        val divs = document.querySelectorAll(".test-class")
+        assertEquals(4, divs.size)
+        val div1 = divs[0]
+        val div2 = divs[1]
+        val div3 = divs[2]
+        val div4 = divs[3]
+        assertEquals("div", div1.tagName())
+        assertEquals("div", div2.tagName())
+        assertEquals("div", div3.tagName())
+        assertEquals("div", div4.tagName())
+    }
+
+    private fun withDocument(html: String, testBody: (document: KtSoupDocument) -> Unit) {
+        val document = KtSoupDocument()
+        assertTrue(document.parse(html))
+        document.use(testBody)
+    }
+
+    @Test
+    fun test() = withDocument(SIMPLE_DOCUMENT) { document ->
+        val div = document.querySelector("#test-id")
         assertNotNull(div)
         assertEquals(KtSoupNodeType.ELEMENT, div.nodeType())
         assertEquals("DIV", div.nodeName())
@@ -65,7 +120,5 @@ class KtSoupDocumentTests {
         assertIs<KtSoupText>(children.first())
         assertEquals(KtSoupNodeType.ELEMENT, children.last().nodeType())
         assertIs<KtSoupElement>(children.last())
-
-        document.close()
     }
 }

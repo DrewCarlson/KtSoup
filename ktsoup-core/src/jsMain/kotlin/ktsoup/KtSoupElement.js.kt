@@ -30,7 +30,10 @@ public actual class KtSoupElement internal constructor(
     }
 
     public actual fun tagName(): String {
-        return element.tagName
+        // NOTE: In general the tagName match the case of the parsed HTML,
+        // but node-html-parser uppercases it so to fit the more likely case
+        // we manually lowercase it here for consistency.
+        return element.tagName.lowercase()
     }
 
     public actual fun attr(name: String): String? {

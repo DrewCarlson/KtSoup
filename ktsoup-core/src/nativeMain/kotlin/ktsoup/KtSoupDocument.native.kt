@@ -36,6 +36,7 @@ public actual class KtSoupDocument {
     }
 
     public actual fun close() {
+        documentPointer ?: return
         lxb_html_document_destroy(checkDocument())
     }
 
