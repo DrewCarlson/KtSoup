@@ -20,8 +20,8 @@ val documentString = """
 val document = KtSoupParser.parse(documentString)
 document.use { document ->
     val div = document.querySelector("#test")
-    println(div.textContent()) // output: Hello World
-    println(div.html())        // output: <div id="test" class="test">Hello World</div>
+    println(div.textContent()) // Hello World
+    println(div.html())        // <div id="test" class="test">Hello World</div>
 }
 
 ```

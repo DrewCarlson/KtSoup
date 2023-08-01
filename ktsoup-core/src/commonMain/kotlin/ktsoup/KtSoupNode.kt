@@ -80,6 +80,9 @@ public expect open class KtSoupNode {
     /**
      * Get this node's parent [KtSoupNode] or null if it has no parent.
      *
+     * *Note for Javascript:* Currently only [KtSoupElement]'s will return
+     * their parent, [KtSoupText] nodes for example will return null.
+     *
      * @return The parent node or null if it has no parent.
      */
     public fun parent(): KtSoupNode?

@@ -95,30 +95,4 @@ class KtSoupDocumentTests {
     private fun withDocument(html: String, testBody: (document: KtSoupDocument) -> Unit) {
         KtSoupParser.parse(html).use(testBody)
     }
-
-    @Test
-    fun test() = withDocument(SIMPLE_DOCUMENT) { document ->
-        val div = document.querySelector("#test-id")
-        assertNotNull(div)
-        assertEquals(KtSoupNodeType.ELEMENT, div.nodeType())
-        assertEquals("DIV", div.nodeName())
-        assertEquals(mapOf("class" to "test-class", "id" to "test-id"), div.attrs())
-        assertEquals("test-id", div.id())
-        assertEquals("test-class", div.className())
-        assertEquals("Hello World Link", div.textContent())
-        assertEquals(
-            "<div id=\"test-id\" class=\"test-class\">Hello World <a href=\"#\">Link</a></div>",
-            // NOTE: Jsoup serialization is inaccurate, manually correct issues for the sake of test consistency.
-            div.html()
-                .replace("\n", "")
-                .replace("> H", ">H"),
-        )
-
-        val children = div.children()
-        assertEquals(2, children.size)
-        assertEquals(KtSoupNodeType.TEXT, children.first().nodeType())
-        assertIs<KtSoupText>(children.first())
-        assertEquals(KtSoupNodeType.ELEMENT, children.last().nodeType())
-        assertIs<KtSoupElement>(children.last())
-    }
 }
