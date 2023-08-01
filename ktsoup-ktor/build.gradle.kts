@@ -99,3 +99,6 @@ kotlin {
         }
     }
 }
+
+// A patch to satisfy Gradle's horrible behavior
+tasks.getByName("dokkaHtml").dependsOn(":ktsoup-core:transformNativeMainCInteropDependenciesMetadataForIde")
