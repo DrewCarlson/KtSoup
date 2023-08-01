@@ -63,8 +63,8 @@ data class RelatedProduct(
 
 ## Scraping
 
-Next we call `parse()` the HTML document or use `parseRemote(url)` to get our `KtSoupDocument`.
-With the document in hand, we query all the desired elements and extract the desired text content.
+Next call `parse()` with the HTML document or use `parseRemote(url)` to get a `KtSoupDocument`.
+With the document in hand, query all the desired elements and extract the relevant text content.
 
 ```kotlin
 val product = KtSoupParser.parse(html).use { doc ->
