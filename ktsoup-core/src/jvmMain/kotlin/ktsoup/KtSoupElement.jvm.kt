@@ -44,4 +44,12 @@ public actual class KtSoupElement internal constructor(
             }
         }
     }
+
+    public actual fun querySelector(selector: String): KtSoupElement? {
+        return element.selectFirst(selector)?.let { KtSoupElement(it) }
+    }
+
+    public actual fun querySelectorAll(selector: String): List<KtSoupElement> {
+        return element.select(selector).map { KtSoupElement(it) }
+    }
 }

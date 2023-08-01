@@ -40,6 +40,14 @@ public actual class KtSoupDocument {
         return KtSoupElement(checkDocument().head())
     }
 
+    public actual fun querySelector(selector: String): KtSoupElement? {
+        return checkDocument().selectFirst(selector)?.let { KtSoupElement(it) }
+    }
+
+    public actual fun querySelectorAll(selector: String): List<KtSoupElement> {
+        return checkDocument().select(selector).map { KtSoupElement(it) }
+    }
+
     public actual fun getElementById(id: String): KtSoupElement? {
         return checkDocument().getElementById(id)?.let { KtSoupElement(it) }
     }

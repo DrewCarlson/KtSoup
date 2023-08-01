@@ -59,6 +59,21 @@ public expect class KtSoupDocument() {
     public fun head(): KtSoupElement?
 
     /**
+     * Get the first [KtSoupElement] matching the css [selector] or null
+     * if there are no matches.
+     *
+     * @return The matching [KtSoupElement] or null.
+     */
+    public fun querySelector(selector: String): KtSoupElement?
+
+    /**
+     * Get all [KtSoupElement]s matching the css [selector].
+     *
+     * @return A list of elements matching the [selector].
+     */
+    public fun querySelectorAll(selector: String): List<KtSoupElement>
+
+    /**
      * Get the first element with an `id` attribute matching [id] or null
      * if there are no matching elements.
      *

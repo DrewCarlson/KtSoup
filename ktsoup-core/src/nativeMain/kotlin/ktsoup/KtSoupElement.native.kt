@@ -77,4 +77,10 @@ public actual class KtSoupElement internal constructor(
         }
         return attrMap
     }
+
+    public actual fun querySelector(selector: String): KtSoupElement? =
+        querySelectorAll(elementPtr.reinterpret(), selector, single = true).firstOrNull()
+
+    public actual fun querySelectorAll(selector: String): List<KtSoupElement> =
+        querySelectorAll(elementPtr.reinterpret(), selector, single = false)
 }

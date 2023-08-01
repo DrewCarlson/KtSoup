@@ -38,6 +38,15 @@ public actual class KtSoupDocument actual constructor() {
         return getElementsByTagName("head").firstOrNull()
     }
 
+    public actual fun querySelector(selector: String): KtSoupElement? {
+        return checkDocument().querySelector(selector)?.wrap() as? KtSoupElement
+    }
+
+    public actual fun querySelectorAll(selector: String): List<KtSoupElement> {
+        return checkDocument().querySelectorAll(selector)
+            .mapNotNull { it.wrap() as? KtSoupElement }
+    }
+
     public actual fun getElementById(id: String): KtSoupElement? {
         return checkDocument().getElementById(id)?.let { KtSoupElement(it) }
     }

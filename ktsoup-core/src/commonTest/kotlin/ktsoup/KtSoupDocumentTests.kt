@@ -41,7 +41,8 @@ class KtSoupDocumentTests {
 
         // val div = document.getElementsByTagName("div").singleOrNull()
         // val div = document.getElementsByClass("test-class").singleOrNull()
-        val div = document.getElementById("test-id")
+        // val div = document.getElementById("test-id")
+        val div = document.querySelector("#test-id")
 
         assertNotNull(div)
         assertEquals(KtSoupNodeType.ELEMENT, div.nodeType())

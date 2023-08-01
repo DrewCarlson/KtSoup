@@ -57,7 +57,7 @@ internal external class HTMLElement : Node {
     fun getElementById(id: String): HTMLElement?
     fun getElementsByTagName(tagName: String): Array<HTMLElement>
     fun querySelectorAll(selector: String): Array<Node>
-    fun querySelector(selector: String): Node
+    fun querySelector(selector: String): Node?
 
     fun getAttribute(key: String): String
 

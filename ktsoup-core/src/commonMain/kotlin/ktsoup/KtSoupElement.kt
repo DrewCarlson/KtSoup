@@ -55,4 +55,19 @@ public expect class KtSoupElement : KtSoupNode {
      * @return A map of attribute keys to their value.
      */
     public fun attrs(): Map<String, String>
+
+    /**
+     * Get the first [KtSoupElement] matching the css [selector] or null
+     * if there are no matches.
+     *
+     * @return The matching [KtSoupElement] or null.
+     */
+    public fun querySelector(selector: String): KtSoupElement?
+
+    /**
+     * Get all [KtSoupElement]s matching the css [selector].
+     *
+     * @return A list of elements matching the [selector].
+     */
+    public fun querySelectorAll(selector: String): List<KtSoupElement>
 }

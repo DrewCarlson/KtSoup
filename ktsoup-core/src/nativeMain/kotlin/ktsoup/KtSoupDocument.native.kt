@@ -56,6 +56,12 @@ public actual class KtSoupDocument {
             ?.let { KtSoupElement(it.reinterpret()) }
     }
 
+    public actual fun querySelector(selector: String): KtSoupElement? =
+        querySelectorAll(checkDocument().reinterpret(), selector, single = true).firstOrNull()
+
+    public actual fun querySelectorAll(selector: String): List<KtSoupElement> =
+        querySelectorAll(checkDocument().reinterpret(), selector, single = false)
+
     public actual fun getElementById(id: String): KtSoupElement? = memScoped {
         val idQuery = id.cstr
         val attrQuery = "id".cstr
