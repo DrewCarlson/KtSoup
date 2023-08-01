@@ -16,10 +16,7 @@
  */
 package ktsoup
 
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertIs
-import kotlin.test.assertNotNull
+import kotlin.test.*
 
 class KtSoupNodeTest {
 
@@ -50,6 +47,21 @@ class KtSoupNodeTest {
     }
 
     @Test
+    fun testToString() = withDocument(SIMPLE_DOCUMENT) { document ->
+        val div = document.querySelector("#test-id")
+        assertNotNull(div)
+        assertEquals("DIV", div.toString())
+    }
+
+    @Test
+    fun testHashcode() = withDocument(SIMPLE_DOCUMENT) { document ->
+        val body = assertNotNull(document.body())
+        val div = assertNotNull(document.querySelector("#test-id"))
+        val divParent = assertNotNull(div.parent())
+        assertEquals(body.hashCode(), divParent.hashCode())
+    }
+
+    @Test
     fun testTextNode() = withDocument(SIMPLE_DOCUMENT) { document ->
         val div = document.querySelector("#test-id")
         assertNotNull(div)
@@ -62,7 +74,7 @@ class KtSoupNodeTest {
     @Test
     fun testParent() = withDocument(SIMPLE_DOCUMENT) { document ->
         val div = document.querySelector("#test-id")
-        val body = document.body()
+        val body = assertNotNull(document.body())
         assertNotNull(div)
         assertEquals(body, div.parent())
     }
@@ -73,6 +85,13 @@ class KtSoupNodeTest {
         assertNotNull(div)
         val element = assertNotNull(div.child(1))
         assertEquals("A", element.nodeName())
+    }
+
+    @Test
+    fun testChildInvalid() = withDocument(SIMPLE_DOCUMENT) { document ->
+        val div = document.querySelector("#test-id")
+        assertNotNull(div)
+        assertNull(div.child(100))
     }
 
     @Test

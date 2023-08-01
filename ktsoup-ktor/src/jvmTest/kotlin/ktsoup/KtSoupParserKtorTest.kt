@@ -19,10 +19,10 @@ package ktsoup
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
 import io.ktor.client.plugins.*
+import io.ktor.utils.io.errors.*
 import kotlinx.coroutines.test.runTest
-import kotlin.test.AfterTest
-import kotlin.test.Test
-import kotlin.test.assertTrue
+import java.lang.IllegalStateException
+import kotlin.test.*
 
 class KtSoupParserKtorTest {
 
@@ -51,5 +51,28 @@ class KtSoupParserKtorTest {
         }
         val document = KtSoupParser.parseRemote("")
         assertTrue(document.title().startsWith("DuckDuckGo"))
+    }
+
+    @Test
+    fun testKtorParse_InvalidContentType() = runTest {
+        val throwable = assertFailsWith<IllegalStateException> {
+            KtSoupParser.parseRemote("https://news.ycombinator.com/rss")
+        }
+        assertEquals(
+            "Response indicated an unacceptable content type: application/rss+xml; charset=utf-8",
+            throwable.message,
+        )
+    }
+
+    @Test
+    fun testKtorParse_FailedResponse() = runTest {
+        val urlString = "https://news.ycombinator.com/does-not-exist"
+        val throwable = assertFailsWith<IOException> {
+            KtSoupParser.parseRemote(urlString)
+        }
+        assertEquals(
+            "Failed to fetch content with status '404 Not Found' for '$urlString'",
+            throwable.message,
+        )
     }
 }

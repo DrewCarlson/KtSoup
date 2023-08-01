@@ -43,9 +43,7 @@ private val acceptedContentTypes = listOf(
 public suspend fun KtSoupParser.parseRemote(urlString: String): KtSoupDocument {
     val response = getOrCreateClient().get(urlString)
     return if (response.status.isSuccess()) {
-        val contentType = checkNotNull(response.contentType()) {
-            "Response did not indicate content type"
-        }
+        val contentType = checkNotNull(response.contentType())
         val isAcceptedContentType = acceptedContentTypes.any {
             it.contentSubtype == contentType.contentSubtype &&
                 it.contentType == contentType.contentType
@@ -55,7 +53,7 @@ public suspend fun KtSoupParser.parseRemote(urlString: String): KtSoupDocument {
         }
         parse(response.bodyAsText())
     } else {
-        throw IOException("Failed to fetch content with status '${response.status}' for '$urlString' ")
+        throw IOException("Failed to fetch content with status '${response.status}' for '$urlString'")
     }
 }
 
