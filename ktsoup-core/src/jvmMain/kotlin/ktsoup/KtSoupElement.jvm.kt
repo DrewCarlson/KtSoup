@@ -18,7 +18,7 @@ package ktsoup
 
 import org.jsoup.nodes.Element
 
-public actual class KtSoupElement internal constructor(
+public actual open class KtSoupElement internal constructor(
     private val element: Element,
 ) : KtSoupNode(element) {
     public actual fun id(): String? {

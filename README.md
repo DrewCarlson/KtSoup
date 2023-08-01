@@ -6,12 +6,7 @@
 
 A multiplatform HTML5 parsing library built on [Lexbor](https://github.com/lexbor/lexbor), [Jsoup](https://jsoup.org/), and [node-html-parser](https://github.com/taoqf/node-html-parser).
 
-TODO:
- - Finalize initial API surface
- - Add documentation and publishing workflows
- - Extra: Add all-in-one fetch and parse API using Ktor
-
-### Example
+## Usage
 
 ```kotlin
 val documentString = """
@@ -22,8 +17,7 @@ val documentString = """
 </html>
 """
 
-val document = KtSoupDocument()
-document.parse(documentString)
+val document = KtSoupParser.parse(documentString)
 document.use { document ->
     val div = document.getElementById("test")
     println(div.textContent()) // output: Hello World

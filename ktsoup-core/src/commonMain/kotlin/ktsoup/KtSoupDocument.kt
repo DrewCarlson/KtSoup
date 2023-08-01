@@ -16,24 +16,12 @@
  */
 package ktsoup
 
-internal const val ERROR_CALL_PARSE_FIRST = "`parse(html)` must be called before using a KtSoupDocument."
+internal const val ERROR_DOCUMENT_CLOSED = "Th KtSoupDocument was closed and cannot be accessed again."
 
 /**
  * Represents a DOM document providing APIs to query and manipulate the document.
- *
- * **Important:** [parse] must be called before using any other methods in this class.
  */
-public expect class KtSoupDocument() {
-
-    /**
-     * Parse the given [html] document.
-     *
-     * [parse] must be called first before using any other method or an
-     * [IllegalStateException] will be thrown.
-     *
-     * @return True if the document was parsed or false if parsing failed.
-     */
-    public fun parse(html: String): Boolean
+public expect class KtSoupDocument : KtSoupElement {
 
     /**
      * Get the document's title or an empty string if no title is found.
@@ -57,21 +45,6 @@ public expect class KtSoupDocument() {
      * @return The document head or null if no head is found.
      */
     public fun head(): KtSoupElement?
-
-    /**
-     * Get the first [KtSoupElement] matching the css [selector] or null
-     * if there are no matches.
-     *
-     * @return The matching [KtSoupElement] or null.
-     */
-    public fun querySelector(selector: String): KtSoupElement?
-
-    /**
-     * Get all [KtSoupElement]s matching the css [selector].
-     *
-     * @return A list of elements matching the [selector].
-     */
-    public fun querySelectorAll(selector: String): List<KtSoupElement>
 
     /**
      * Get the first element with an `id` attribute matching [id] or null

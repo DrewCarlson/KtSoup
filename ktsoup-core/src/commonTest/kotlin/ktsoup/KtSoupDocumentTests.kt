@@ -21,10 +21,12 @@ import kotlin.test.*
 class KtSoupDocumentTests {
 
     @Test
-    fun testDocument_Parse() {
-        val document = KtSoupDocument()
-        assertTrue(document.parse(SIMPLE_DOCUMENT))
+    fun testDocument_ParseAndClose() {
+        val document = KtSoupParser.parse(SIMPLE_DOCUMENT)
         document.close()
+        assertFailsWith<IllegalStateException> {
+            document.title()
+        }
     }
 
     @Test
@@ -91,9 +93,7 @@ class KtSoupDocumentTests {
     }
 
     private fun withDocument(html: String, testBody: (document: KtSoupDocument) -> Unit) {
-        val document = KtSoupDocument()
-        assertTrue(document.parse(html))
-        document.use(testBody)
+        KtSoupParser.parse(html).use(testBody)
     }
 
     @Test

@@ -1,21 +1,21 @@
-public final class ktsoup/KtSoupDocument {
-	public fun <init> ()V
+public final class ktsoup/KtSoupDocument : ktsoup/KtSoupElement {
 	public final fun body ()Lktsoup/KtSoupElement;
 	public final fun close ()V
 	public final fun getElementById (Ljava/lang/String;)Lktsoup/KtSoupElement;
 	public final fun getElementsByClass (Ljava/lang/String;)Ljava/util/List;
 	public final fun getElementsByTagName (Ljava/lang/String;)Ljava/util/List;
 	public final fun head ()Lktsoup/KtSoupElement;
-	public final fun parse (Ljava/lang/String;)Z
 	public final fun title ()Ljava/lang/String;
 	public final fun use (Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
 }
 
-public final class ktsoup/KtSoupElement : ktsoup/KtSoupNode {
+public class ktsoup/KtSoupElement : ktsoup/KtSoupNode {
 	public final fun attr (Ljava/lang/String;)Ljava/lang/String;
 	public final fun attrs ()Ljava/util/Map;
 	public final fun className ()Ljava/lang/String;
 	public final fun id ()Ljava/lang/String;
+	public final fun querySelector (Ljava/lang/String;)Lktsoup/KtSoupElement;
+	public final fun querySelectorAll (Ljava/lang/String;)Ljava/util/List;
 	public final fun tagName ()Ljava/lang/String;
 }
 
@@ -50,6 +50,11 @@ public final class ktsoup/KtSoupNodeType : java/lang/Enum {
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lktsoup/KtSoupNodeType;
 	public static fun values ()[Lktsoup/KtSoupNodeType;
+}
+
+public final class ktsoup/KtSoupParser {
+	public static final field INSTANCE Lktsoup/KtSoupParser;
+	public final fun parse (Ljava/lang/String;)Lktsoup/KtSoupDocument;
 }
 
 public final class ktsoup/KtSoupText : ktsoup/KtSoupNode {

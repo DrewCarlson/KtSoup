@@ -16,17 +16,11 @@
  */
 package ktsoup
 
-import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
-public actual class KtSoupDocument {
-
-    private var document: Document? = null
-
-    public actual fun parse(html: String): Boolean {
-        document = Jsoup.parse(html)
-        return true
-    }
+public actual class KtSoupDocument internal constructor(
+    private var document: Document?,
+) : KtSoupElement(document!!) {
 
     public actual fun title(): String {
         return checkDocument().title()
@@ -38,14 +32,6 @@ public actual class KtSoupDocument {
 
     public actual fun head(): KtSoupElement? {
         return KtSoupElement(checkDocument().head())
-    }
-
-    public actual fun querySelector(selector: String): KtSoupElement? {
-        return checkDocument().selectFirst(selector)?.let { KtSoupElement(it) }
-    }
-
-    public actual fun querySelectorAll(selector: String): List<KtSoupElement> {
-        return checkDocument().select(selector).map { KtSoupElement(it) }
     }
 
     public actual fun getElementById(id: String): KtSoupElement? {
@@ -73,6 +59,6 @@ public actual class KtSoupDocument {
     }
 
     private fun checkDocument(): Document {
-        return checkNotNull(document) { ERROR_CALL_PARSE_FIRST }
+        return checkNotNull(document) { ERROR_DOCUMENT_CLOSED }
     }
 }

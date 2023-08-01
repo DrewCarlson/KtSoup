@@ -18,7 +18,7 @@ package ktsoup
 
 import ktsoup.nodehtmlparser.HTMLElement
 
-public actual class KtSoupElement internal constructor(
+public actual open class KtSoupElement internal constructor(
     private val element: HTMLElement,
 ) : KtSoupNode(element) {
     public actual fun id(): String? {

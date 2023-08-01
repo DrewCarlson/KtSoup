@@ -20,7 +20,7 @@ import kotlinx.cinterop.*
 import lexbor.*
 import platform.posix.size_tVar
 
-public actual class KtSoupElement internal constructor(
+public actual open class KtSoupElement internal constructor(
     private val elementPtr: CPointer<lxb_dom_element_t>,
 ) : KtSoupNode(elementPtr.pointed.node.ptr) {
     public actual fun id(): String? = memScoped {

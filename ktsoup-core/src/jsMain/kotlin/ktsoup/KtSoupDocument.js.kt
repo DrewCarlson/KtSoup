@@ -17,14 +17,10 @@
 package ktsoup
 
 import ktsoup.nodehtmlparser.HTMLElement
-import ktsoup.nodehtmlparser.HTMLParser
 
-public actual class KtSoupDocument actual constructor() {
-    private var document: HTMLElement? = null
-    public actual fun parse(html: String): Boolean {
-        document = HTMLParser.parse(html)
-        return document != null
-    }
+public actual class KtSoupDocument internal constructor(
+    private var document: HTMLElement?,
+) : KtSoupElement(document!!) {
 
     public actual fun title(): String {
         return getElementsByTagName("title").firstOrNull()?.textContent().orEmpty()
@@ -38,22 +34,12 @@ public actual class KtSoupDocument actual constructor() {
         return getElementsByTagName("head").firstOrNull()
     }
 
-    public actual fun querySelector(selector: String): KtSoupElement? {
-        return checkDocument().querySelector(selector)?.wrap() as? KtSoupElement
-    }
-
-    public actual fun querySelectorAll(selector: String): List<KtSoupElement> {
-        return checkDocument().querySelectorAll(selector)
-            .mapNotNull { it.wrap() as? KtSoupElement }
-    }
-
     public actual fun getElementById(id: String): KtSoupElement? {
         return checkDocument().getElementById(id)?.let { KtSoupElement(it) }
     }
 
     public actual fun getElementsByClass(className: String): List<KtSoupElement> {
-        return checkDocument().querySelectorAll(".$className")
-            .map { KtSoupElement(it.unsafeCast<HTMLElement>()) }
+        return querySelectorAll(".$className")
     }
 
     public actual fun getElementsByTagName(tagName: String): List<KtSoupElement> {
@@ -73,6 +59,6 @@ public actual class KtSoupDocument actual constructor() {
     }
 
     private fun checkDocument(): HTMLElement {
-        return checkNotNull(document) { ERROR_CALL_PARSE_FIRST }
+        return checkNotNull(document) { ERROR_DOCUMENT_CLOSED }
     }
 }

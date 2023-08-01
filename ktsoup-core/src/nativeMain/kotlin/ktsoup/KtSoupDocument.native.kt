@@ -22,22 +22,14 @@ import platform.posix.size_tVar
 
 private const val START_LIST_SIZE = 128uL
 
-public actual class KtSoupDocument {
-
-    private var documentPointer: CPointer<lxb_html_document_t>? = null
-
-    public actual fun parse(html: String): Boolean = memScoped {
-        documentPointer = lxb_html_document_create()
-        lxb_html_document_parse(
-            checkDocument(),
-            html.cstr.ptr.reinterpret(),
-            html.length.convert(),
-        ) == LXB_STATUS_OK
-    }
+public actual class KtSoupDocument internal constructor(
+    private var documentPointer: CPointer<lxb_html_document_t>?,
+) : KtSoupElement(documentPointer!!.reinterpret()) {
 
     public actual fun close() {
         documentPointer ?: return
         lxb_html_document_destroy(checkDocument())
+        documentPointer = null
     }
 
     public actual fun title(): String = memScoped {
@@ -56,12 +48,6 @@ public actual class KtSoupDocument {
         return lxb_html_document_head_element(checkDocument())
             ?.let { KtSoupElement(it.reinterpret()) }
     }
-
-    public actual fun querySelector(selector: String): KtSoupElement? =
-        querySelectorAll(checkDocument().reinterpret(), selector, single = true).firstOrNull()
-
-    public actual fun querySelectorAll(selector: String): List<KtSoupElement> =
-        querySelectorAll(checkDocument().reinterpret(), selector, single = false)
 
     public actual fun getElementById(id: String): KtSoupElement? = memScoped {
         val idQuery = id.cstr
@@ -144,6 +130,6 @@ public actual class KtSoupDocument {
     }
 
     private fun checkDocument(): CPointer<lxb_html_document_t> {
-        return checkNotNull(documentPointer) { ERROR_CALL_PARSE_FIRST }
+        return checkNotNull(documentPointer) { ERROR_DOCUMENT_CLOSED }
     }
 }

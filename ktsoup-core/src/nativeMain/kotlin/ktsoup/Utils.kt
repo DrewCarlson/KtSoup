@@ -53,7 +53,7 @@ internal val selectorCallback = staticCFunction<
 }
 
 internal fun querySelectorAll(
-    elementPtr: CValuesRef<lxb_dom_node_t /* = lxb_dom_node */>?,
+    elementPtr: CValuesRef<lxb_dom_node_t>?,
     selector: String,
     single: Boolean,
 ): List<KtSoupElement> = memScoped {

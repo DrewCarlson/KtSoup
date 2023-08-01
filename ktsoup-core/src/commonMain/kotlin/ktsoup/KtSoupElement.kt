@@ -19,7 +19,7 @@ package ktsoup
 /**
  * A DOM element from a [KtSoupDocument].
  */
-public expect class KtSoupElement : KtSoupNode {
+public expect open class KtSoupElement : KtSoupNode {
 
     /**
      * Get the `id` attribute value or null if there is no `id` attribute.
