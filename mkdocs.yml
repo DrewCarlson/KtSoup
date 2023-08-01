@@ -1,0 +1,53 @@
+site_name: KtSoup
+site_url: https://github.com/drewcarlson/ktsoup
+repo_url: https://github.com/drewcarlson/ktsoup
+
+theme:
+  name: material
+  icon:
+    repo: fontawesome/brands/github
+  palette:
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+docs_dir: docs
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+
+plugins:
+  - search
+  - markdownextradata: {}
+
+extra:
+  project: KtSoup
+  version: !ENV [VERSION, '0.0.1']
+  social:
+    - icon: fontawesome/solid/heart
+      link: https://github.com/sponsors/DrewCarlson
+    - icon: fontawesome/brands/github
+      link: https://github.com/DrewCarlson/KtSoup
+
+nav:
+  - Home: index.md
+  - Getting Started: 1-getting-started.md
+  - Download: 2-download.md
+  - Scraping Example: 3-scraping-example.md
+  - Development:
+      - Building: development/building.md
+      - Documentation: development/documentation.md

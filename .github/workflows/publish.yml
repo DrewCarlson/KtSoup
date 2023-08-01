@@ -39,7 +39,6 @@ jobs:
           arguments: assemble publishAllPublicationsToMavenCentralRepository
 
   publish-docs:
-    name: Publish KDoc to Github Pages
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
     permissions:
@@ -48,10 +47,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: true
-      - uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: 11
+          fetch-depth: 0
 
       - name: Cache Build files
         uses: actions/cache@v3
@@ -61,14 +57,47 @@ jobs:
             ~/.gradle
           key: ${{ runner.os }}-${{ hashFiles('gradle.properties') }}
 
+      - name: Configure Git user
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 11
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+          architecture: x64
+          cache: 'pip'
+          cache-dependency-path: 'docs/requirements.txt'
+
+      - name: Install Python dependencies
+        run: python3 -m pip install -r ./docs/requirements.txt
+
       - uses: gradle/gradle-build-action@v2
-        name: Build Docs
+        name: Build KDocs
         with:
           arguments: clean dokkaHtmlMultiModule
 
-      - name: Publish Docs
-        uses: JamesIves/github-pages-deploy-action@v4.4.3
+      - name: Move KDoc build
+        run: mv build/dokka/htmlMultiModule docs/kdoc
+
+      - name: Get version
+        uses: DrewCarlson/action-get-tag@v4
         with:
-          branch: docs
-          folder: build/dokka/htmlMultiModule
-          single-commit: true
+          strip_v: true
+          env_var_name: VERSION
+
+      - name: Get version with V
+        uses: DrewCarlson/action-get-tag@v4
+        with:
+          strip_v: false
+          env_var_name: VERSION_WITH_V
+
+      - name: Deploy with mike 🚀
+        run: |
+          mike deploy --push ${{ env.VERSION_WITH_V }}

@@ -6,6 +6,9 @@
 
 A multiplatform HTML5 parsing library built on [Lexbor](https://github.com/lexbor/lexbor), [Jsoup](https://jsoup.org/), and [node-html-parser](https://github.com/taoqf/node-html-parser).
 
+### [Documentation](https://drewcarlson.github.io/KtSoup/)
+### [API Docs](https://drewcarlson.github.io/KtSoup/kdoc/)
+
 ## Usage
 
 ```kotlin
@@ -24,17 +27,6 @@ document.use { document ->
     println(div.html())        // <div id="test" class="test">Hello World</div>
 }
 
-```
-
-## Ktor
-
-The `ktsoup-ktor` module provides methods for parsing remote HTML documents.
-
-```kotlin
-val document = KtSoupParser.parseRemote("https://duckduckgo.com")
-document.use { document ->
-    println(document.title()) // DuckDuckGo — Privacy, simplified.
-}
 ```
 
 ## Download

@@ -16,7 +16,7 @@
  */
 package ktsoup
 
-internal const val ERROR_DOCUMENT_CLOSED = "Th KtSoupDocument was closed and cannot be accessed again."
+internal const val ERROR_DOCUMENT_CLOSED = "The KtSoupDocument was closed and cannot be accessed again."
 
 /**
  * Represents a DOM document providing APIs to query and manipulate the document.
