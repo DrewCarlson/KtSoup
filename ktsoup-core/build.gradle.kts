@@ -36,7 +36,7 @@ kotlin {
     }
     configure(
         listOfNotNull(
-            mingwX64(),
+            if (!OperatingSystem.current().isLinux) mingwX64() else null,
             if (!OperatingSystem.current().isWindows) linuxX64() else null,
             if (!OperatingSystem.current().isWindows) linuxArm64() else null,
             if (OperatingSystem.current().isMacOsX) macosX64() else null,
@@ -49,7 +49,7 @@ kotlin {
         compilations.getByName("main") {
             val nativeTargetName = konanTarget.name
             val staticLibPath = rootProject.file("lexbor-bin/${nativeTargetName}")
-            val lexbor by cinterops.creating {
+            cinterops.create("lexbor") {
                 packageName("lexbor")
                 includeDirs("$lexborSourcePath/..")
                 headers(lexborSourceFiles("core").filterHeaders())
@@ -106,6 +106,7 @@ kotlin {
         }
     }
 
+    @Suppress("UNUSED_VARIABLE")
     sourceSets {
         all {
             explicitApi()
@@ -149,8 +150,10 @@ kotlin {
             dependsOn(commonTest)
         }
 
-        val mingwX64Main by getting { dependsOn(nativeMain) }
-        val mingwX64Test by getting { dependsOn(nativeTest) }
+        if (!OperatingSystem.current().isLinux) {
+            val mingwX64Main by getting { dependsOn(nativeMain) }
+            val mingwX64Test by getting { dependsOn(nativeTest) }
+        }
         if (OperatingSystem.current().isMacOsX) {
             val macosArm64Main by getting { dependsOn(nativeMain) }
             val macosArm64Test by getting { dependsOn(nativeTest) }

@@ -7,6 +7,4 @@ pluginManagement {
 
 rootProject.name = "KtSoup"
 
-include(
-    ":ktsoup-core"
-)
+include(":ktsoup-core", ":ktsoup-ktor")

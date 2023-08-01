@@ -1,0 +1,6 @@
+public final class ktsoup/KtSoupParserKtorKt {
+	public static final fun configureClient (Lktsoup/KtSoupParser;Lkotlin/jvm/functions/Function1;)V
+	public static final fun parseRemote (Lktsoup/KtSoupParser;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun setClient (Lktsoup/KtSoupParser;Lio/ktor/client/HttpClient;)V
+}
+
