@@ -86,19 +86,10 @@ jobs:
       - name: Move KDoc build
         run: mv build/dokka/htmlMultiModule docs/kdoc
 
-      - name: Get version
-        uses: DrewCarlson/action-get-tag@v4
-        with:
-          strip_v: true
-          env_var_name: VERSION
-
-      - name: Get version with V
-        uses: DrewCarlson/action-get-tag@v4
-        id: tag
-        with:
-          strip_v: false
-          env_var_name: VERSION_WITH_V
-
       - name: Deploy with mike
+        env:
+          VERSION: ${{ github.ref_name[1:] }}
+          VERSION_WITH_V: ${{ github.ref_name }}
         run: |
-          mike deploy --push ${{ github.ref_name }}
+          version=${{ github.ref_name }}
+          mike deploy -p github --update-alias latest --push ${{ env.VERSION }} ${{ env.VERSION }}
