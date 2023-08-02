@@ -94,10 +94,11 @@ jobs:
 
       - name: Get version with V
         uses: DrewCarlson/action-get-tag@v4
+        id: tag
         with:
           strip_v: false
           env_var_name: VERSION_WITH_V
 
-      - name: Deploy with mike 🚀
+      - name: Deploy with mike
         run: |
-          mike deploy --push ${{ env.VERSION_WITH_V }}
+          mike deploy --push ${{ steps.tag.outputs.tag }}
