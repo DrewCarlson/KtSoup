@@ -1,8 +1,27 @@
 import org.gradle.internal.os.OperatingSystem
+import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 
 plugins {
     kotlin("multiplatform")
     alias(libs.plugins.mavenPublish)
+}
+
+val hostOs = DefaultNativePlatform.getCurrentOperatingSystem()
+val testGenSrcPath = "build/ktgen/config"
+val installTestConfig by tasks.creating {
+    val configFile = file("${testGenSrcPath}/config.kt")
+    onlyIf { !configFile.exists() }
+    doFirst {
+        file(testGenSrcPath).mkdirs()
+        if (!configFile.exists()) {
+            configFile.writeText(
+                """|package ktsoup
+                   |
+                   |const val RESOURCE_BASE_PATH = "${project.file("src/commonTest/resources").absolutePath}${File.separator}"
+                   |""".trimMargin().trimMargin().replace("\\", "\\\\")
+            )
+        }
+    }
 }
 
 kotlin {
@@ -21,6 +40,13 @@ kotlin {
     if (OperatingSystem.current().isMacOsX) iosArm64()
     if (OperatingSystem.current().isMacOsX) iosX64()
 
+    targets.forEach { target ->
+        target.compilations.findByName("test")?.apply {
+            tasks.named(compileKotlinTaskName) {
+                dependsOn(installTestConfig)
+            }
+        }
+    }
 
     @Suppress("UNUSED_VARIABLE")
     sourceSets {
@@ -32,6 +58,7 @@ kotlin {
             }
         }
         val commonTest by getting {
+            kotlin.srcDir(testGenSrcPath)
             dependencies {
                 implementation(kotlin("test"))
                 implementation(libs.coroutines.test)

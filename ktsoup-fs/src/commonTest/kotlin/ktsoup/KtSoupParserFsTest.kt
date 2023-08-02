@@ -21,8 +21,8 @@ import kotlin.test.Test
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
-private const val SIMPLE_DOCUMENT_PATH = "src/commonTest/resources/SimpleDocument.html"
-private const val LARGE_DOCUMENT_PATH = "src/commonTest/resources/LargeDocument.html"
+private const val SIMPLE_DOCUMENT_PATH = "${RESOURCE_BASE_PATH}SimpleDocument.html"
+private const val LARGE_DOCUMENT_PATH = "${RESOURCE_BASE_PATH}LargeDocument.html"
 
 class KtSoupParserFsTest {
 
