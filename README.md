@@ -6,8 +6,8 @@
 
 A multiplatform HTML5 parsing library built on [Lexbor](https://github.com/lexbor/lexbor), [Jsoup](https://jsoup.org/), and [node-html-parser](https://github.com/taoqf/node-html-parser).
 
-### [Documentation](https://drewcarlson.github.io/KtSoup/)
-### [API Docs](https://drewcarlson.github.io/KtSoup/kdoc/)
+### [Documentation](https://drewcarlson.github.io/KtSoup/latest/)
+### [API Docs](https://drewcarlson.github.io/KtSoup/latest/kdoc/)
 
 ## Usage
 
