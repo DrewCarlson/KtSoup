@@ -54,7 +54,14 @@ public final class ktsoup/KtSoupNodeType : java/lang/Enum {
 
 public final class ktsoup/KtSoupParser {
 	public static final field INSTANCE Lktsoup/KtSoupParser;
+	public final fun parse (Ljava/io/InputStream;)Lktsoup/KtSoupDocument;
 	public final fun parse (Ljava/lang/String;)Lktsoup/KtSoupDocument;
+	public final fun parseChunked (ILkotlin/jvm/functions/Function1;)Lktsoup/KtSoupDocument;
+	public static synthetic fun parseChunked$default (Lktsoup/KtSoupParser;ILkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lktsoup/KtSoupDocument;
+}
+
+public final class ktsoup/KtSoupParserKt {
+	public static final field DEFAULT_PARSE_BUFFER_SIZE I
 }
 
 public final class ktsoup/KtSoupText : ktsoup/KtSoupNode {

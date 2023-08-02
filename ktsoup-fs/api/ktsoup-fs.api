@@ -1,0 +1,7 @@
+public final class ktsoup/KtSoupParserFsKt {
+	public static final fun parseFile (Lktsoup/KtSoupParser;Ljava/lang/String;I)Lktsoup/KtSoupDocument;
+	public static final fun parseFile (Lktsoup/KtSoupParser;Lkotlinx/io/files/Path;I)Lktsoup/KtSoupDocument;
+	public static synthetic fun parseFile$default (Lktsoup/KtSoupParser;Ljava/lang/String;IILjava/lang/Object;)Lktsoup/KtSoupDocument;
+	public static synthetic fun parseFile$default (Lktsoup/KtSoupParser;Lkotlinx/io/files/Path;IILjava/lang/Object;)Lktsoup/KtSoupDocument;
+}
+

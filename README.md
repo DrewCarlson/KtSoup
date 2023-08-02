@@ -51,6 +51,7 @@ repositories {
 
 dependencies {
     implementation("org.drewcarlson:ktsoup-core:$VERSION")
+    implementation("org.drewcarlson:ktsoup-fs:$VERSION")
     implementation("org.drewcarlson:ktsoup-ktor:$VERSION")
 }
 ```
@@ -64,6 +65,7 @@ ktsoup = "1.0.0-SNAPSHOT"
 
 [libraries]
 ktsoup-core = { module = "org.drewcarlson:ktsoup-core", version.ref = "ktsoup" }
+ktsoup-fs = { module = "org.drewcarlson:ktsoup-fs", version.ref = "ktsoup" }
 ktsoup-ktor = { module = "org.drewcarlson:ktsoup-ktor", version.ref = "ktsoup" }
 ```
 </details>

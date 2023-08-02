@@ -16,25 +16,45 @@
  */
 package ktsoup
 
-import kotlinx.cinterop.convert
-import kotlinx.cinterop.cstr
-import kotlinx.cinterop.memScoped
-import kotlinx.cinterop.reinterpret
-import lexbor.LXB_STATUS_OK
-import lexbor.lxb_html_document_create
-import lexbor.lxb_html_document_parse
+import kotlinx.cinterop.*
+import lexbor.*
 
 public actual object KtSoupParser {
 
     public actual fun parse(html: String): KtSoupDocument = memScoped {
         val documentPointer = lxb_html_document_create()
-        check(
-            lxb_html_document_parse(
-                documentPointer,
-                html.cstr.ptr.reinterpret(),
-                html.length.convert(),
-            ) == LXB_STATUS_OK,
-        ) { "Failed to parse HTML document." }
+        val status = lxb_html_document_parse(
+            documentPointer,
+            html.cstr.ptr.reinterpret(),
+            html.length.convert(),
+        )
+        check(status == LXB_STATUS_OK) { "Failed to parse HTML document." }
         KtSoupDocument(documentPointer)
+    }
+
+    public actual fun parseChunked(
+        bufferSize: Int,
+        getChunk: (buffer: ByteArray) -> Int,
+    ): KtSoupDocument = memScoped {
+        val parser = lxb_html_parser_create()
+        var status = lxb_html_parser_init(parser)
+        defer { lxb_html_parser_destroy(parser) }
+        check(status == LXB_STATUS_OK) { "Failed to initialize HTML parser." }
+
+        val documentPtr = lxb_html_parse_chunk_begin(parser)
+        val buffer = ByteArray(bufferSize)
+
+        var byteCount = getChunk(buffer)
+        while (byteCount != -1) {
+            val bufferPtr = buffer.toCValues().ptr
+            status = lxb_html_parse_chunk_process(parser, bufferPtr.reinterpret(), byteCount.toULong())
+            check(status == LXB_STATUS_OK) { "Failed to process HTML chunk." }
+            byteCount = getChunk(buffer)
+        }
+
+        status = lxb_html_parse_chunk_end(parser)
+        check(status == LXB_STATUS_OK) { "Failed to parse HTML document." }
+
+        return KtSoupDocument(documentPtr)
     }
 }

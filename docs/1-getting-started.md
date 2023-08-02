@@ -23,6 +23,15 @@ When using the `ktsoup-ktor` module, you'll have access to the `parseRemote(urlS
 val document: KtSoupDocument = KtSoupParser.parseRemote("https://duckduckgo.com")
 ```
 
+### File
+
+When using the `ktsoup-fs` module, you'll have access to the `parseFile(path: String)` function.
+Note that all targets except Browser Javascript are supported.
+
+```kotlin
+val document: KtSoupDocument = KtSoupParser.parseFile("/path/to/document.html")
+```
+
 ## Document Usage
 
 Once you've obtained a `KtSoupDocument`, you can use and pass it around including any `KtSoupElements` obtained with it.

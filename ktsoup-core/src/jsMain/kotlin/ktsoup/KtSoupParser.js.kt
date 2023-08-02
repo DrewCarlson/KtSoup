@@ -26,4 +26,23 @@ public actual object KtSoupParser {
         }
         return KtSoupDocument(document)
     }
+
+    public actual fun parseChunked(
+        bufferSize: Int,
+        getChunk: (buffer: ByteArray) -> Int,
+    ): KtSoupDocument {
+        val buffer = ByteArray(bufferSize)
+        var out = ByteArray(0)
+        var totalBytes = 0
+
+        var bytes = getChunk(buffer)
+        while (bytes != -1) {
+            out = out.copyOf(totalBytes + bytes)
+            buffer.copyInto(out, totalBytes, 0, bytes)
+            totalBytes += bytes
+
+            bytes = getChunk(buffer)
+        }
+        return KtSoupDocument(HTMLParser.parse(out.decodeToString()))
+    }
 }

@@ -17,6 +17,11 @@
 package ktsoup
 
 /**
+ * The default buffer size for parsing HTML documents using [KtSoupParser.parseChunked].
+ */
+public const val DEFAULT_PARSE_BUFFER_SIZE: Int = 1024
+
+/**
  * The primary entrypoint for KtSoup, use [parse] to receive a [KtSoupDocument]
  * to access and manipulate the provided HTML document.
  */
@@ -24,7 +29,24 @@ public expect object KtSoupParser {
     /**
      * Parse the given [html] document.
      *
+     * @param html The HTML document as a string.
      * @return The parsed document as a [KtSoupDocument].
      */
     public fun parse(html: String): KtSoupDocument
+
+    /**
+     * Parse an HTML document by calling [getChunk] to fill the provided [ByteArray]
+     * until no more data is available.
+     *
+     * **Javascript Note:** node-html-parser only supports parsing strings, so the entire file
+     * will be loaded into memory and parsed in one go.
+     *
+     * @param bufferSize The size of the buffer to provide to [getChunk].
+     * @param getChunk A function to fill the provided buffer, returning the number of bytes or -1 when exhausted.
+     * @return The parsed document as a [KtSoupDocument].
+     */
+    public fun parseChunked(
+        bufferSize: Int = DEFAULT_PARSE_BUFFER_SIZE,
+        getChunk: (buffer: ByteArray) -> Int,
+    ): KtSoupDocument
 }
