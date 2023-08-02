@@ -89,5 +89,5 @@ jobs:
       - name: Deploy with mike
         run: |
           VERSION=${{ github.ref_name }}
-          VERSION=${VERSION#v}
-          mike deploy -p github --update-alias latest --push $VERSION $VERSION
+          VERSION_WITH_V=${VERSION#v}
+          mike deploy -p github --update-alias latest --push $VERSION_WITH_V $VERSION_WITH_V
