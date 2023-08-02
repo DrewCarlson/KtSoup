@@ -87,9 +87,7 @@ jobs:
         run: mv build/dokka/htmlMultiModule docs/kdoc
 
       - name: Deploy with mike
-        env:
-          VERSION: ${{ github.ref_name[1:] }}
-          VERSION_WITH_V: ${{ github.ref_name }}
         run: |
-          version=${{ github.ref_name }}
-          mike deploy -p github --update-alias latest --push ${{ env.VERSION }} ${{ env.VERSION }}
+          VERSION=${{ github.ref_name }}
+          VERSION=${VERSION#v}
+          mike deploy -p github --update-alias latest --push $VERSION $VERSION
