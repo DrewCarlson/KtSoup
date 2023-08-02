@@ -101,4 +101,4 @@ jobs:
 
       - name: Deploy with mike
         run: |
-          mike deploy --push ${{ steps.tag.outputs.tag }}
+          mike deploy --push ${{ github.ref_name }}
