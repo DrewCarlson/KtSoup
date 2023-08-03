@@ -115,10 +115,15 @@ kotlin {
                 optIn("kotlinx.cinterop.ExperimentalForeignApi")
             }
         }
-        val commonMain by getting
+        val commonMain by getting {
+            dependencies {
+                implementation(libs.coroutines.core)
+            }
+        }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
+                implementation(libs.coroutines.test)
             }
         }
         val jvmMain by getting {

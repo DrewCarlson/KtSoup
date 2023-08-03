@@ -16,6 +16,10 @@
  */
 package ktsoup
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.withContext
 import kotlin.test.*
 
 class KtSoupDocumentTests {
@@ -27,6 +31,47 @@ class KtSoupDocumentTests {
         assertFailsWith<IllegalStateException> {
             document.title()
         }
+    }
+
+    @Test
+    fun testDocument_ParseChunked() {
+        val chunks = SIMPLE_DOCUMENT.chunked(10)
+        var currentChunk = 0
+        val document = KtSoupParser.parseChunked { buffer ->
+            if (currentChunk > chunks.lastIndex) {
+                -1
+            } else {
+                chunks[currentChunk].encodeToByteArray().let { chunk ->
+                    currentChunk++
+                    chunk.copyInto(buffer)
+                    chunk.size
+                }
+            }
+        }
+        assertEquals("Test Title", document.title())
+        document.close()
+    }
+
+    @Test
+    fun testDocument_ParseChunkedAsync() = runTest {
+        val chunks = SIMPLE_DOCUMENT.chunked(10)
+        var currentChunk = 0
+        val document = KtSoupParser.parseChunkedAsync { buffer ->
+            if (currentChunk > chunks.lastIndex) {
+                -1
+            } else {
+                withContext(Dispatchers.Default) {
+                    delay(1)
+                    chunks[currentChunk].encodeToByteArray().let { chunk ->
+                        currentChunk++
+                        chunk.copyInto(buffer)
+                        chunk.size
+                    }
+                }
+            }
+        }
+        assertEquals("Test Title", document.title())
+        document.close()
     }
 
     @Test

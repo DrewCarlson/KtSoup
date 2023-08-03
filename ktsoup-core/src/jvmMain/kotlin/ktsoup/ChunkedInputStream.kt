@@ -16,6 +16,7 @@
  */
 package ktsoup
 
+import kotlinx.coroutines.runBlocking
 import java.io.InputStream
 
 internal class ChunkedInputStream(
@@ -43,6 +44,45 @@ internal class ChunkedInputStream(
     override fun read(b: ByteArray, off: Int, len: Int): Int {
         if (bufferPos >= bufferLimit) {
             bufferLimit = getChunk(buffer)
+            bufferPos = 0
+
+            if (bufferLimit == -1) {
+                return -1 // end of stream
+            }
+        }
+
+        val bytesRead = len.coerceAtMost(bufferLimit - bufferPos)
+        System.arraycopy(buffer, bufferPos, b, off, bytesRead)
+        bufferPos += bytesRead
+        return bytesRead
+    }
+}
+
+internal class BlockingChunkedInputStream(
+    bufferSize: Int,
+    private val getChunk: suspend (buffer: ByteArray) -> Int,
+) : InputStream() {
+
+    private val buffer: ByteArray = ByteArray(bufferSize)
+    private var bufferPos = 0
+    private var bufferLimit = 0
+
+    override fun read(): Int {
+        if (bufferPos >= bufferLimit) {
+            bufferLimit = runBlocking { getChunk(buffer) }
+            bufferPos = 0
+
+            if (bufferLimit == -1) {
+                return -1 // end of stream
+            }
+        }
+
+        return buffer[bufferPos++].toInt() and 0xff
+    }
+
+    override fun read(b: ByteArray, off: Int, len: Int): Int {
+        if (bufferPos >= bufferLimit) {
+            bufferLimit = runBlocking { getChunk(buffer) }
             bufferPos = 0
 
             if (bufferLimit == -1) {

@@ -57,4 +57,20 @@ public expect interface KtSoupParser {
         bufferSize: Int = DEFAULT_PARSE_BUFFER_SIZE,
         getChunk: (buffer: ByteArray) -> Int,
     ): KtSoupDocument
+
+    /**
+     * Parse an HTML document by calling [getChunk] to fill the provided [ByteArray]
+     * until no more data is available.
+     *
+     * **Javascript Note:** node-html-parser only supports parsing strings, so the entire file
+     * will be loaded into memory and parsed in one go.
+     *
+     * @param bufferSize The size of the buffer to provide to [getChunk].
+     * @param getChunk A function to fill the provided buffer, returning the number of bytes or -1 when exhausted.
+     * @return The parsed document as a [KtSoupDocument].
+     */
+    public suspend fun parseChunkedAsync(
+        bufferSize: Int = DEFAULT_PARSE_BUFFER_SIZE,
+        getChunk: suspend (buffer: ByteArray) -> Int,
+    ): KtSoupDocument
 }

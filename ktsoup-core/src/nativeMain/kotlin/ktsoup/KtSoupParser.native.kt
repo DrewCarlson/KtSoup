@@ -31,6 +31,11 @@ public actual interface KtSoupParser {
         bufferSize: Int,
         getChunk: (buffer: ByteArray) -> Int,
     ): KtSoupDocument
+
+    public actual suspend fun parseChunkedAsync(
+        bufferSize: Int,
+        getChunk: suspend (buffer: ByteArray) -> Int,
+    ): KtSoupDocument
 }
 
 private class KtSoupParserImpl : KtSoupParser {
@@ -49,6 +54,32 @@ private class KtSoupParserImpl : KtSoupParser {
     override fun parseChunked(
         bufferSize: Int,
         getChunk: (buffer: ByteArray) -> Int,
+    ): KtSoupDocument = memScoped {
+        val parser = lxb_html_parser_create()
+        var status = lxb_html_parser_init(parser)
+        defer { lxb_html_parser_destroy(parser) }
+        check(status == LXB_STATUS_OK) { "Failed to initialize HTML parser." }
+
+        val documentPtr = lxb_html_parse_chunk_begin(parser)
+        val buffer = ByteArray(bufferSize)
+
+        var byteCount = getChunk(buffer)
+        while (byteCount != -1) {
+            val bufferPtr = buffer.toCValues().ptr
+            status = lxb_html_parse_chunk_process(parser, bufferPtr.reinterpret(), byteCount.toULong())
+            check(status == LXB_STATUS_OK) { "Failed to process HTML chunk." }
+            byteCount = getChunk(buffer)
+        }
+
+        status = lxb_html_parse_chunk_end(parser)
+        check(status == LXB_STATUS_OK) { "Failed to parse HTML document." }
+
+        return KtSoupDocument(documentPtr)
+    }
+
+    override suspend fun parseChunkedAsync(
+        bufferSize: Int,
+        getChunk: suspend (buffer: ByteArray) -> Int,
     ): KtSoupDocument = memScoped {
         val parser = lxb_html_parser_create()
         var status = lxb_html_parser_init(parser)

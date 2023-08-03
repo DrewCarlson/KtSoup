@@ -40,6 +40,11 @@ public actual interface KtSoupParser {
         bufferSize: Int,
         getChunk: (buffer: ByteArray) -> Int,
     ): KtSoupDocument
+
+    public actual suspend fun parseChunkedAsync(
+        bufferSize: Int,
+        getChunk: suspend (buffer: ByteArray) -> Int,
+    ): KtSoupDocument
 }
 
 internal class KtSoupParserImpl : KtSoupParser {
@@ -52,6 +57,14 @@ internal class KtSoupParserImpl : KtSoupParser {
         getChunk: (buffer: ByteArray) -> Int,
     ): KtSoupDocument {
         val inputStream = ChunkedInputStream(bufferSize, getChunk)
+        return KtSoupDocument(Jsoup.parse(inputStream, null, ""))
+    }
+
+    override suspend fun parseChunkedAsync(
+        bufferSize: Int,
+        getChunk: suspend (buffer: ByteArray) -> Int,
+    ): KtSoupDocument {
+        val inputStream = BlockingChunkedInputStream(bufferSize, getChunk)
         return KtSoupDocument(Jsoup.parse(inputStream, null, ""))
     }
 

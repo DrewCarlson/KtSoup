@@ -20,7 +20,9 @@ import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import io.ktor.utils.io.*
 import io.ktor.utils.io.errors.*
+import kotlinx.coroutines.*
 
 private val httpClientMap = mutableMapOf<KtSoupParser, HttpClient>()
 
@@ -40,9 +42,9 @@ private val acceptedContentTypes = listOf(
  * @throws IOException When the response indicates a status code >= 300 (i.e. an error).
  * @return The parsed HTML document as a [KtSoupDocument].
  */
-public suspend fun KtSoupParser.parseRemote(urlString: String): KtSoupDocument {
+public suspend fun KtSoupParser.parseRemote(urlString: String): KtSoupDocument = coroutineScope {
     val response = getOrCreateClient().get(urlString)
-    return if (response.status.isSuccess()) {
+    if (response.status.isSuccess()) {
         val contentType = checkNotNull(response.contentType())
         val isAcceptedContentType = acceptedContentTypes.any {
             it.contentSubtype == contentType.contentSubtype &&
@@ -51,7 +53,8 @@ public suspend fun KtSoupParser.parseRemote(urlString: String): KtSoupDocument {
         check(isAcceptedContentType) {
             "Response indicated an unacceptable content type: $contentType"
         }
-        parse(response.bodyAsText())
+        val bodyChannel = response.bodyAsChannel()
+        parseChunkedAsync { buf -> bodyChannel.readAvailable(buf) }
     } else {
         throw IOException("Failed to fetch content with status '${response.status}' for '$urlString'")
     }

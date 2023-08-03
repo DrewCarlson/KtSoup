@@ -57,6 +57,7 @@ public abstract interface class ktsoup/KtSoupParser {
 	public abstract fun parse (Ljava/io/InputStream;)Lktsoup/KtSoupDocument;
 	public abstract fun parse (Ljava/lang/String;)Lktsoup/KtSoupDocument;
 	public abstract fun parseChunked (ILkotlin/jvm/functions/Function1;)Lktsoup/KtSoupDocument;
+	public abstract fun parseChunkedAsync (ILkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class ktsoup/KtSoupParser$Companion : ktsoup/KtSoupParser {
@@ -64,10 +65,12 @@ public final class ktsoup/KtSoupParser$Companion : ktsoup/KtSoupParser {
 	public fun parse (Ljava/io/InputStream;)Lktsoup/KtSoupDocument;
 	public fun parse (Ljava/lang/String;)Lktsoup/KtSoupDocument;
 	public fun parseChunked (ILkotlin/jvm/functions/Function1;)Lktsoup/KtSoupDocument;
+	public fun parseChunkedAsync (ILkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class ktsoup/KtSoupParser$DefaultImpls {
 	public static synthetic fun parseChunked$default (Lktsoup/KtSoupParser;ILkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lktsoup/KtSoupDocument;
+	public static synthetic fun parseChunkedAsync$default (Lktsoup/KtSoupParser;ILkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 }
 
 public final class ktsoup/KtSoupParserKt {
