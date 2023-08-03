@@ -52,11 +52,21 @@ public final class ktsoup/KtSoupNodeType : java/lang/Enum {
 	public static fun values ()[Lktsoup/KtSoupNodeType;
 }
 
-public final class ktsoup/KtSoupParser {
-	public static final field INSTANCE Lktsoup/KtSoupParser;
-	public final fun parse (Ljava/io/InputStream;)Lktsoup/KtSoupDocument;
-	public final fun parse (Ljava/lang/String;)Lktsoup/KtSoupDocument;
-	public final fun parseChunked (ILkotlin/jvm/functions/Function1;)Lktsoup/KtSoupDocument;
+public abstract interface class ktsoup/KtSoupParser {
+	public static final field Companion Lktsoup/KtSoupParser$Companion;
+	public abstract fun parse (Ljava/io/InputStream;)Lktsoup/KtSoupDocument;
+	public abstract fun parse (Ljava/lang/String;)Lktsoup/KtSoupDocument;
+	public abstract fun parseChunked (ILkotlin/jvm/functions/Function1;)Lktsoup/KtSoupDocument;
+}
+
+public final class ktsoup/KtSoupParser$Companion : ktsoup/KtSoupParser {
+	public final fun create ()Lktsoup/KtSoupParser;
+	public fun parse (Ljava/io/InputStream;)Lktsoup/KtSoupDocument;
+	public fun parse (Ljava/lang/String;)Lktsoup/KtSoupDocument;
+	public fun parseChunked (ILkotlin/jvm/functions/Function1;)Lktsoup/KtSoupDocument;
+}
+
+public final class ktsoup/KtSoupParser$DefaultImpls {
 	public static synthetic fun parseChunked$default (Lktsoup/KtSoupParser;ILkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lktsoup/KtSoupDocument;
 }
 

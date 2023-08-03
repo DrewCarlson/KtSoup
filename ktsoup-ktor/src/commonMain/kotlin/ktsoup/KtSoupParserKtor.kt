@@ -22,7 +22,7 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.utils.io.errors.*
 
-private var httpClient: HttpClient? = null
+private val httpClientMap = mutableMapOf<KtSoupParser, HttpClient>()
 
 private val acceptedContentTypes = listOf(
     ContentType.Text.Html,
@@ -34,8 +34,8 @@ private val acceptedContentTypes = listOf(
 /**
  * Fetch and parse the HTML from [urlString].
  *
- * @see configureClient to configure the Ktor [HttpClient] to be used.
- * @see setClient to set a preconfigured ktor [HttpClient] to be used.
+ * @see withClientConfig to configure the Ktor [HttpClient] to be used.
+ * @see withClient to set a preconfigured ktor [HttpClient] to be used.
  * @throws IllegalStateException When the response content type does not represent an HTML document.
  * @throws IOException When the response indicates a status code >= 300 (i.e. an error).
  * @return The parsed HTML document as a [KtSoupDocument].
@@ -58,27 +58,34 @@ public suspend fun KtSoupParser.parseRemote(urlString: String): KtSoupDocument {
 }
 
 /**
- * Create and configure a new [HttpClient] to be used by [parseRemote].
+ * Create a new [KtSoupParser] that will use a [HttpClient] configured by [block]
+ * with [parseRemote].
  */
 @Suppress("UnusedReceiverParameter")
-public fun KtSoupParser.configureClient(block: HttpClientConfig<*>.() -> Unit) {
-    httpClient = HttpClient(block)
+public fun KtSoupParser.withClientConfig(block: HttpClientConfig<*>.() -> Unit): KtSoupParser {
+    val newParser = KtSoupParser.create()
+    httpClientMap[newParser] = HttpClient(block)
+    return newParser
 }
 
 /**
- * Set a preconfigured [HttpClient] to be used by [parseRemote].
+ * Create a new [KtSoupParser] that will use the preconfigured [HttpClient]
+ * with [parseRemote].
  */
 @Suppress("UnusedReceiverParameter")
-public fun KtSoupParser.setClient(newHttpClient: HttpClient) {
-    httpClient = newHttpClient
+public fun KtSoupParser.withClient(httpClient: HttpClient): KtSoupParser {
+    val newParser = KtSoupParser.create()
+    httpClientMap[newParser] = httpClient
+    return newParser
 }
 
-private fun getOrCreateClient(): HttpClient {
-    return httpClient ?: HttpClient().also { httpClient = it }
+/**
+ * Close and remove the [HttpClient] for the given [KtSoupParser].
+ */
+public fun KtSoupParser.closeClient() {
+    httpClientMap.remove(this)?.close()
 }
 
-@Suppress("UnusedReceiverParameter")
-internal fun KtSoupParser.clearClient() {
-    httpClient?.close()
-    httpClient = null
+private fun KtSoupParser.getOrCreateClient(): HttpClient {
+    return httpClientMap[this] ?: HttpClient().also { httpClientMap[this] = it }
 }

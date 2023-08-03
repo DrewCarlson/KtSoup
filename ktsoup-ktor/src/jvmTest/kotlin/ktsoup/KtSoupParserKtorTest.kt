@@ -26,9 +26,16 @@ import kotlin.test.*
 
 class KtSoupParserKtorTest {
 
+    private lateinit var parser: KtSoupParser
+
+    @BeforeTest
+    fun setup() {
+        parser = KtSoupParser
+    }
+
     @AfterTest
     fun cleanup() {
-        KtSoupParser.clearClient()
+        parser.closeClient()
     }
 
     @Test
@@ -39,24 +46,24 @@ class KtSoupParserKtorTest {
 
     @Test
     fun testKtorParse_CustomClient() = runTest {
-        KtSoupParser.setClient(HttpClient(OkHttp))
-        val document = KtSoupParser.parseRemote("https://duckduckgo.com")
+        parser = KtSoupParser.withClient(HttpClient(OkHttp))
+        val document = parser.parseRemote("https://duckduckgo.com")
         assertTrue(document.title().startsWith("DuckDuckGo"))
     }
 
     @Test
     fun testKtorParse_ConfiguredClient() = runTest {
-        KtSoupParser.configureClient {
+        parser = KtSoupParser.withClientConfig {
             defaultRequest { url("https://duckduckgo.com") }
         }
-        val document = KtSoupParser.parseRemote("")
+        val document = parser.parseRemote("")
         assertTrue(document.title().startsWith("DuckDuckGo"))
     }
 
     @Test
     fun testKtorParse_InvalidContentType() = runTest {
         val throwable = assertFailsWith<IllegalStateException> {
-            KtSoupParser.parseRemote("https://news.ycombinator.com/rss")
+            parser.parseRemote("https://news.ycombinator.com/rss")
         }
         assertEquals(
             "Response indicated an unacceptable content type: application/rss+xml; charset=utf-8",

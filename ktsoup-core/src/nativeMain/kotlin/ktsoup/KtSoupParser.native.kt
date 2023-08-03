@@ -19,9 +19,23 @@ package ktsoup
 import kotlinx.cinterop.*
 import lexbor.*
 
-public actual object KtSoupParser {
+public actual interface KtSoupParser {
 
-    public actual fun parse(html: String): KtSoupDocument = memScoped {
+    public actual companion object : KtSoupParser by KtSoupParserImpl() {
+        public actual fun create(): KtSoupParser = KtSoupParserImpl()
+    }
+
+    public actual fun parse(html: String): KtSoupDocument
+
+    public actual fun parseChunked(
+        bufferSize: Int,
+        getChunk: (buffer: ByteArray) -> Int,
+    ): KtSoupDocument
+}
+
+private class KtSoupParserImpl : KtSoupParser {
+
+    override fun parse(html: String): KtSoupDocument = memScoped {
         val documentPointer = lxb_html_document_create()
         val status = lxb_html_document_parse(
             documentPointer,
@@ -32,7 +46,7 @@ public actual object KtSoupParser {
         KtSoupDocument(documentPointer)
     }
 
-    public actual fun parseChunked(
+    override fun parseChunked(
         bufferSize: Int,
         getChunk: (buffer: ByteArray) -> Int,
     ): KtSoupDocument = memScoped {

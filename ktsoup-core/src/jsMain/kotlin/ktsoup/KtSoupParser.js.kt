@@ -18,16 +18,30 @@ package ktsoup
 
 import ktsoup.nodehtmlparser.HTMLParser
 
-public actual object KtSoupParser {
+public actual interface KtSoupParser {
 
-    public actual fun parse(html: String): KtSoupDocument {
+    public actual companion object : KtSoupParser by KtSoupParserImpl() {
+        public actual fun create(): KtSoupParser = KtSoupParserImpl()
+    }
+
+    public actual fun parse(html: String): KtSoupDocument
+
+    public actual fun parseChunked(
+        bufferSize: Int,
+        getChunk: (buffer: ByteArray) -> Int,
+    ): KtSoupDocument
+}
+
+private class KtSoupParserImpl : KtSoupParser {
+
+    override fun parse(html: String): KtSoupDocument {
         val document = checkNotNull(HTMLParser.parse(html)) {
             "Failed to parse HTML document"
         }
         return KtSoupDocument(document)
     }
 
-    public actual fun parseChunked(
+    override fun parseChunked(
         bufferSize: Int,
         getChunk: (buffer: ByteArray) -> Int,
     ): KtSoupDocument {

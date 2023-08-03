@@ -19,18 +19,10 @@ package ktsoup
 import org.jsoup.Jsoup
 import java.io.InputStream
 
-public actual object KtSoupParser {
+public actual interface KtSoupParser {
 
-    public actual fun parse(html: String): KtSoupDocument {
-        return KtSoupDocument(Jsoup.parse(html))
-    }
-
-    public actual fun parseChunked(
-        bufferSize: Int,
-        getChunk: (buffer: ByteArray) -> Int,
-    ): KtSoupDocument {
-        val inputStream = ChunkedInputStream(bufferSize, getChunk)
-        return KtSoupDocument(Jsoup.parse(inputStream, null, ""))
+    public actual companion object : KtSoupParser by KtSoupParserImpl() {
+        public actual fun create(): KtSoupParser = KtSoupParserImpl()
     }
 
     /**
@@ -40,46 +32,30 @@ public actual object KtSoupParser {
      * @param inputStream The source [InputStream] to read.
      * @return The parsed document as a [KtSoupDocument].
      */
-    public fun parse(inputStream: InputStream): KtSoupDocument {
-        return KtSoupDocument(Jsoup.parse(inputStream, null, ""))
-    }
+    public fun parse(inputStream: InputStream): KtSoupDocument
+
+    public actual fun parse(html: String): KtSoupDocument
+
+    public actual fun parseChunked(
+        bufferSize: Int,
+        getChunk: (buffer: ByteArray) -> Int,
+    ): KtSoupDocument
 }
 
-private class ChunkedInputStream(
-    bufferSize: Int,
-    private val getChunk: (buffer: ByteArray) -> Int,
-) : InputStream() {
-
-    private val buffer: ByteArray = ByteArray(bufferSize)
-    private var bufferPos = 0
-    private var bufferLimit = 0
-
-    override fun read(): Int {
-        if (bufferPos >= bufferLimit) {
-            bufferLimit = getChunk(buffer)
-            bufferPos = 0
-
-            if (bufferLimit == -1) {
-                return -1 // end of stream
-            }
-        }
-
-        return buffer[bufferPos++].toInt() and 0xff
+internal class KtSoupParserImpl : KtSoupParser {
+    override fun parse(html: String): KtSoupDocument {
+        return KtSoupDocument(Jsoup.parse(html))
     }
 
-    override fun read(b: ByteArray, off: Int, len: Int): Int {
-        if (bufferPos >= bufferLimit) {
-            bufferLimit = getChunk(buffer)
-            bufferPos = 0
+    override fun parseChunked(
+        bufferSize: Int,
+        getChunk: (buffer: ByteArray) -> Int,
+    ): KtSoupDocument {
+        val inputStream = ChunkedInputStream(bufferSize, getChunk)
+        return KtSoupDocument(Jsoup.parse(inputStream, null, ""))
+    }
 
-            if (bufferLimit == -1) {
-                return -1 // end of stream
-            }
-        }
-
-        val bytesRead = len.coerceAtMost(bufferLimit - bufferPos)
-        System.arraycopy(buffer, bufferPos, b, off, bytesRead)
-        bufferPos += bytesRead
-        return bytesRead
+    override fun parse(inputStream: InputStream): KtSoupDocument {
+        return KtSoupDocument(Jsoup.parse(inputStream, null, ""))
     }
 }

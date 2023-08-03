@@ -25,7 +25,15 @@ public const val DEFAULT_PARSE_BUFFER_SIZE: Int = 1024
  * The primary entrypoint for KtSoup, use [parse] to receive a [KtSoupDocument]
  * to access and manipulate the provided HTML document.
  */
-public expect object KtSoupParser {
+public expect interface KtSoupParser {
+
+    public companion object : KtSoupParser {
+        /**
+         * Create a new [KtSoupParser] instance.
+         */
+        public fun create(): KtSoupParser
+    }
+
     /**
      * Parse the given [html] document.
      *
