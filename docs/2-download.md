@@ -28,9 +28,9 @@ repositories {
 
 ```kotlin
 dependencies {
-    implementation("org.drewcarlson:ktsoup-core:{{ version }}")
-    implementation("org.drewcarlson:ktsoup-fs:{{ version }}")
-    implementation("org.drewcarlson:ktsoup-ktor:{{ version }}")
+    implementation("org.drewcarlson:ktsoup-core:{{ lib_version }}")
+    implementation("org.drewcarlson:ktsoup-fs:{{ lib_version }}")
+    implementation("org.drewcarlson:ktsoup-ktor:{{ lib_version }}")
 }
 ```
 
@@ -38,7 +38,7 @@ dependencies {
 
 ```toml
 [versions]
-ktsoup = "{{ version }}"
+ktsoup = "{{ lib_version }}"
 
 [libraries]
 ktsoup-core = { module = "org.drewcarlson:ktsoup-core", version.ref = "ktsoup" }

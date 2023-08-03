@@ -53,10 +53,10 @@ Material for MkDocs [Reference](https://squidfunk.github.io/mkdocs-material/refe
     Some dynamic variables are made available, they can be used with the `{{ name }}` syntax.
     Below are the available variables.
     
-    | Name    | Value                                                            |
-    |---------|------------------------------------------------------------------|
-    | project | The project name for the repository                              |
-    | version | The current release version, for example `2.3.5` (No `v` prefix) |
+    | Name        | Value                                                            |
+    |-------------|------------------------------------------------------------------|
+    | project     | The project name for the repository                              |
+    | lib_version | The current release version, for example `2.3.5` (No `v` prefix) |
 
 ## View docs locally
 

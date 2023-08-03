@@ -1,6 +1,11 @@
 site_name: KtSoup
-site_url: https://github.com/drewcarlson/ktsoup
+site_description: "KtSoup - Kotlin Multiplatform HTML5 Parser"
+site_author: Drew Carlson
+site_url: https://drewcarlson.github.io/KtSoup/
 repo_url: https://github.com/drewcarlson/ktsoup
+repo_name: KtSoup
+remote_branch: gh-pages
+copyright: 'Copyright &copy; 2023 Drew Carlson'
 
 theme:
   name: material
@@ -32,11 +37,14 @@ markdown_extensions:
 
 plugins:
   - search
+  - mike
   - markdownextradata: {}
 
 extra:
   project: KtSoup
-  version: !ENV [VERSION, '0.0.1']
+  lib_version: !ENV [VERSION, '0.0.1']
+  version:
+    provider: mike
   social:
     - icon: fontawesome/solid/heart
       link: https://github.com/sponsors/DrewCarlson
