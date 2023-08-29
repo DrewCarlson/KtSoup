@@ -19,7 +19,7 @@ kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 binaryCompat = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binary_compat" }
 kotlinter = { id = "org.jmailen.kotlinter", version = "3.16.0" }
 mavenPublish = { id = "com.vanniktech.maven.publish", version = "0.25.3" }
-downloadPlugin = { id = "de.undercouch.download", version = "5.4.0" }
+downloadPlugin = { id = "de.undercouch.download", version = "5.5.0" }
 
 [libraries]
 jsoup = { module = "org.jsoup:jsoup", version = "1.16.1" }
