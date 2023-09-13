@@ -8,7 +8,7 @@ spotless = "6.19.0"
 coroutines = "1.7.3"
 atomicfu = "0.22.0"
 lexbor = "2.3.0"
-kotlinio = "0.2.1"
+kotlinio = "0.3.0"
 
 [plugins]
 multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
