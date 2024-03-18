@@ -2,7 +2,7 @@
 kotlin = { strictly = "1.9.23" }
 dokka = "1.9.10"
 ktorio = "2.3.9"
-binary_compat = "0.13.2"
+binary_compat = "0.14.0"
 kover = "0.7.6"
 spotless = "6.22.0"
 coroutines = "1.8.0"
