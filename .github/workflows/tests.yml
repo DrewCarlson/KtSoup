@@ -50,14 +50,14 @@ jobs:
           arguments: koverXmlReport
 
       - name: Archive Reports
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
           name: reports
           path: '**/build/reports/*'
 
       - name: Archive Test Results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
           name: test-results-macos
@@ -80,14 +80,14 @@ jobs:
           arguments: mingwX64Test
 
       - name: Archive Reports
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
           name: reports
           path: '**/build/reports/*'
 
       - name: Archive Test Results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
           name: test-results-windows
@@ -122,14 +122,14 @@ jobs:
           arguments: linuxX64Test
 
       - name: Archive Reports
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
           name: reports
           path: '**/build/reports/*'
 
       - name: Archive Test Results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
           name: test-results-ubuntu
@@ -141,7 +141,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Download kover reports
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: reports
       - uses: codecov/codecov-action@v3
@@ -158,7 +158,7 @@ jobs:
       checks: write
     steps:
       - name: Download test results
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
       - name: Publish Unit Test Results
         uses: mikepenz/action-junit-report@v4
         if: ${{ always() }}
