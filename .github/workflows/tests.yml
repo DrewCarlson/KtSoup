@@ -29,22 +29,22 @@ jobs:
             ~/.gradle
           key: ${{ runner.os }}-${{ hashFiles('gradle.properties') }}-v1
 
-      - uses: gradle/gradle-build-action@v2
+      - uses: gradle/gradle-build-action@v3
         name: JVM Test
         with:
           arguments: jvmTest
 
-      - uses: gradle/gradle-build-action@v2
+      - uses: gradle/gradle-build-action@v3
         name: macos x64 Test
         with:
           arguments: macosX64Test
 
-      - uses: gradle/gradle-build-action@v2
+      - uses: gradle/gradle-build-action@v3
         name: ios x64 Test
         with:
           arguments: iosX64Test
 
-      - uses: gradle/gradle-build-action@v2
+      - uses: gradle/gradle-build-action@v3
         name: Kover report
         with:
           arguments: koverXmlReport
@@ -74,7 +74,7 @@ jobs:
           distribution: 'zulu'
           java-version: 11
 
-      - uses: gradle/gradle-build-action@v2
+      - uses: gradle/gradle-build-action@v3
         name: Test Windows Target
         with:
           arguments: mingwX64Test
@@ -111,12 +111,12 @@ jobs:
             ~/.gradle
           key: ${{ runner.os }}-${{ hashFiles('gradle.properties') }}-v1
 
-      - uses: gradle/gradle-build-action@v2
+      - uses: gradle/gradle-build-action@v3
         name: JS Tests
         with:
           arguments: jsTest
 
-      - uses: gradle/gradle-build-action@v2
+      - uses: gradle/gradle-build-action@v3
         name: Linux x64 Tests
         with:
           arguments: linuxX64Test
