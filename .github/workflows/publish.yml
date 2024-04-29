@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   publish:
-    runs-on: macos-13
+    runs-on: macos-14
     env:
       ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.ORG_GRADLE_PROJECT_signingInMemoryKey }}
       ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.ORG_GRADLE_PROJECT_signingInMemoryKeyPassword }}
