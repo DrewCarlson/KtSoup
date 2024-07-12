@@ -16,8 +16,9 @@
  */
 package ktsoup
 
+import kotlinx.io.buffered
 import kotlinx.io.files.Path
-import kotlinx.io.files.source
+import kotlinx.io.files.SystemFileSystem
 
 /**
  * Parse the HTML document at [pathString] or throw if it does not exist.
@@ -47,7 +48,7 @@ public fun KtSoupParser.parseFile(
     path: Path,
     bufferSize: Int = DEFAULT_PARSE_BUFFER_SIZE,
 ): KtSoupDocument {
-    return path.source().use { source ->
+    return SystemFileSystem.source(path).buffered().use { source ->
         parseChunked { buffer ->
             source.readAtMostTo(buffer, endIndex = bufferSize)
         }
