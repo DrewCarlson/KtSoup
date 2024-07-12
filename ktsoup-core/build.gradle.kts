@@ -1,5 +1,6 @@
 import de.undercouch.gradle.tasks.download.Download
 import org.gradle.internal.os.OperatingSystem
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.konan.target.KonanTarget
 import java.io.File
 
@@ -104,6 +105,11 @@ kotlin {
                 tasks.getByName(interopProcessingTaskName).dependsOn(extractTask)
             }
         }
+    }
+
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
     }
 
     @Suppress("UNUSED_VARIABLE")
