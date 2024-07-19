@@ -1,5 +1,5 @@
 [versions]
-kotlin = { strictly = "1.9.24" }
+kotlin = { strictly = "1.9.25" }
 dokka = "1.9.20"
 ktorio = "2.3.12"
 binary_compat = "0.16.2"
