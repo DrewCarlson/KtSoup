@@ -1,14 +1,14 @@
 [versions]
-kotlin = { strictly = "1.9.25" }
+kotlin = { strictly = "2.0.0" }
 dokka = "1.9.20"
 ktorio = "2.3.12"
 binary_compat = "0.16.3"
-kover = "0.8.2"
+kover = "0.8.3"
 spotless = "6.25.0"
 coroutines = "1.8.1"
 atomicfu = "0.25.0"
 lexbor = "2.3.0"
-kotlinio = "0.5.1"
+kotlinio = "0.5.2"
 
 [plugins]
 multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
@@ -17,7 +17,7 @@ dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 binaryCompat = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binary_compat" }
-kotlinter = { id = "org.jmailen.kotlinter", version = "4.3.0" }
+kotlinter = { id = "org.jmailen.kotlinter", version = "4.4.1" }
 mavenPublish = { id = "com.vanniktech.maven.publish", version = "0.29.0" }
 downloadPlugin = { id = "de.undercouch.download", version = "5.6.0" }
 

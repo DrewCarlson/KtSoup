@@ -12,6 +12,7 @@ plugins {
     alias(libs.plugins.spotless)
     alias(libs.plugins.mavenPublish) apply false
     alias(libs.plugins.downloadPlugin) apply false
+    id("com.louiscad.complete-kotlin") version "1.1.0"
 }
 
 allprojects {

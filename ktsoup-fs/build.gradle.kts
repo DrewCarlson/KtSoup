@@ -25,9 +25,8 @@ val installTestConfig by tasks.creating {
 }
 
 kotlin {
-    jvm {
-        jvmToolchain(11)
-    }
+    jvmToolchain(11)
+    jvm()
     js(IR) {
         nodejs()
     }
@@ -48,7 +47,6 @@ kotlin {
         }
     }
 
-    @Suppress("UNUSED_VARIABLE")
     sourceSets {
         all { explicitApi() }
         val commonMain by getting {

@@ -22,16 +22,15 @@ fun lexborSourceFiles(folder: String): List<File> =
 fun List<File>.filterHeaders(): List<File> = filter { it.name.endsWith(".h") }
 
 kotlin {
-    jvm {
-        jvmToolchain(11)
-    }
+    jvmToolchain(11)
+    jvm()
     js(IR) {
         browser {
-            testTask(Action {
+            testTask {
                 useKarma {
                     useFirefoxHeadless()
                 }
-            })
+            }
         }
         nodejs()
     }
@@ -94,7 +93,7 @@ kotlin {
                 val downloadTask = tasks.register<Download>(downloadTaskName) {
                     enabled = !staticLibPath.exists()
                     src("https://github.com/DrewCarlson/KtSoup/releases/download/lexbor-v${libs.versions.lexbor.get()}/${nativeTargetName}.zip")
-                    dest(buildDir.resolve("${nativeTargetName}.zip"))
+                    dest(layout.buildDirectory.file("${nativeTargetName}.zip"))
                 }
                 val extractTask = tasks.register<Copy>(extractTaskName) {
                     enabled = !staticLibPath.exists()

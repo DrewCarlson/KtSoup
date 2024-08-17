@@ -6,16 +6,15 @@ plugins {
 }
 
 kotlin {
-    jvm {
-        jvmToolchain(11)
-    }
+    jvmToolchain(11)
+    jvm()
     js(IR) {
         browser {
-            testTask(Action {
+            testTask {
                 useKarma {
                     useFirefoxHeadless()
                 }
-            })
+            }
         }
         nodejs()
     }
@@ -29,7 +28,6 @@ kotlin {
     if (OperatingSystem.current().isMacOsX) iosX64()
 
 
-    @Suppress("UNUSED_VARIABLE")
     sourceSets {
         all { explicitApi() }
         val commonMain by getting {
