@@ -46,7 +46,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
-          name: reports
+          name: reports-macos
           path: '**/build/reports/*'
 
       - name: Archive Test Results
@@ -74,7 +74,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
-          name: reports
+          name: reports-windows
           path: '**/build/reports/*'
 
       - name: Archive Test Results
@@ -112,7 +112,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
-          name: reports
+          name: reports-linux
           path: '**/build/reports/*'
 
       - name: Archive Test Results
@@ -130,7 +130,8 @@ jobs:
       - name: Download kover reports
         uses: actions/download-artifact@v4
         with:
-          name: reports
+          pattern: reports-*
+          merge-multiple: true
       - uses: codecov/codecov-action@v4
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
@@ -146,6 +147,9 @@ jobs:
     steps:
       - name: Download test results
         uses: actions/download-artifact@v4
+        with:
+          pattern: test-results-*
+          merge-multiple: true
       - name: Publish Unit Test Results
         uses: mikepenz/action-junit-report@v4
         if: ${{ always() }}
