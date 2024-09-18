@@ -50,14 +50,14 @@ jobs:
           arguments: koverXmlReport
 
       - name: Archive Reports
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
           name: reports
           path: '**/build/reports/*'
 
       - name: Archive Test Results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
           name: test-results-macos
@@ -80,14 +80,14 @@ jobs:
           arguments: mingwX64Test
 
       - name: Archive Reports
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
           name: reports
           path: '**/build/reports/*'
 
       - name: Archive Test Results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
           name: test-results-windows
@@ -122,14 +122,14 @@ jobs:
           arguments: linuxX64Test
 
       - name: Archive Reports
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
           name: reports
           path: '**/build/reports/*'
 
       - name: Archive Test Results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
           name: test-results-ubuntu
