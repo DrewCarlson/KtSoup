@@ -25,6 +25,7 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: 11
+      - uses: gradle/actions/setup-gradle@v3
       - name: Cache Build files
         uses: actions/cache@v4
         if: ${{ !startsWith(matrix.os, 'windows') }}
@@ -33,10 +34,8 @@ jobs:
             ~/.konan
             ~/.gradle
           key: ${{ runner.os }}-${{ hashFiles('gradle.properties') }}-v1
-      - uses: gradle/gradle-build-action@v3
-        name: Publish
-        with:
-          arguments: assemble publishAllPublicationsToMavenCentralRepository
+      - name: Publish
+        run: ./gradlew assemble publishAllPublicationsToMavenCentralRepository
 
   publish-docs:
     runs-on: ubuntu-latest
@@ -66,6 +65,7 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: 11
+      - uses: gradle/actions/setup-gradle@v3
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -78,10 +78,8 @@ jobs:
       - name: Install Python dependencies
         run: python3 -m pip install -r ./docs/requirements.txt
 
-      - uses: gradle/gradle-build-action@v3
-        name: Build KDocs
-        with:
-          arguments: clean dokkaHtmlMultiModule
+      - name: Build KDocs
+        run: ./gradlew clean dokkaHtmlMultiModule
 
       - name: Move KDoc build
         run: mv build/dokka/htmlMultiModule docs/kdoc

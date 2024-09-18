@@ -21,6 +21,7 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: 11
+      - uses: gradle/actions/setup-gradle@v3
       - name: Cache Build files
         uses: actions/cache@v4
         with:
@@ -29,25 +30,17 @@ jobs:
             ~/.gradle
           key: ${{ runner.os }}-${{ hashFiles('gradle.properties') }}-v1
 
-      - uses: gradle/gradle-build-action@v3
-        name: JVM Test
-        with:
-          arguments: jvmTest
+      - name: JVM Test
+        run: ./gradlew jvmTest
 
-      - uses: gradle/gradle-build-action@v3
-        name: macos x64 Test
-        with:
-          arguments: macosX64Test
+      - name: macos x64 Test
+        run: ./gradlew macosX64Test
 
-      - uses: gradle/gradle-build-action@v3
-        name: ios x64 Test
-        with:
-          arguments: iosX64Test
+      - name: ios x64 Test
+        run: ./gradlew iosX64Test
 
-      - uses: gradle/gradle-build-action@v3
-        name: Kover report
-        with:
-          arguments: koverXmlReport
+      - name: Kover report
+        run: ./gradlew koverXmlReport
 
       - name: Archive Reports
         uses: actions/upload-artifact@v4
@@ -74,10 +67,8 @@ jobs:
           distribution: 'zulu'
           java-version: 11
 
-      - uses: gradle/gradle-build-action@v3
-        name: Test Windows Target
-        with:
-          arguments: mingwX64Test
+      - name: Test Windows Target
+        run: ./gradlew mingwX64Test
 
       - name: Archive Reports
         uses: actions/upload-artifact@v4
@@ -111,15 +102,11 @@ jobs:
             ~/.gradle
           key: ${{ runner.os }}-${{ hashFiles('gradle.properties') }}-v1
 
-      - uses: gradle/gradle-build-action@v3
-        name: JS Tests
-        with:
-          arguments: jsTest
+      - name: JS Tests
+        run: ./gradlew jsTest
 
-      - uses: gradle/gradle-build-action@v3
-        name: Linux x64 Tests
-        with:
-          arguments: linuxX64Test
+      - name: Linux x64 Tests
+        run: ./gradlew linuxX64Test
 
       - name: Archive Reports
         uses: actions/upload-artifact@v4
