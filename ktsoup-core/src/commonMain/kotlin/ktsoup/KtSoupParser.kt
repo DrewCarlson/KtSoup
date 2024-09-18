@@ -32,6 +32,18 @@ public expect interface KtSoupParser {
          * Create a new [KtSoupParser] instance.
          */
         public fun create(): KtSoupParser
+
+        public override fun parse(html: String): KtSoupDocument
+
+        public override fun parseChunked(
+            bufferSize: Int,
+            getChunk: (buffer: ByteArray) -> Int,
+        ): KtSoupDocument
+
+        public override suspend fun parseChunkedAsync(
+            bufferSize: Int,
+            getChunk: suspend (buffer: ByteArray) -> Int,
+        ): KtSoupDocument
     }
 
     /**
