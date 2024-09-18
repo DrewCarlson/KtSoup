@@ -18,14 +18,16 @@ kotlin {
         }
         nodejs()
     }
-    if (!OperatingSystem.current().isLinux) mingwX64()
-    if (!OperatingSystem.current().isWindows) linuxX64()
-    //if (!OperatingSystem.current().isWindows) linuxArm64()
-    if (OperatingSystem.current().isMacOsX) macosX64()
-    if (OperatingSystem.current().isMacOsX) macosArm64()
-    if (OperatingSystem.current().isMacOsX) iosSimulatorArm64()
-    if (OperatingSystem.current().isMacOsX) iosArm64()
-    if (OperatingSystem.current().isMacOsX) iosX64()
+
+    val currentOs = OperatingSystem.current()
+    if (!currentOs.isLinux) mingwX64()
+    if (!currentOs.isWindows) linuxX64()
+    //if (!currentOs.isWindows) linuxArm64()
+    if (currentOs.isMacOsX) macosX64()
+    if (currentOs.isMacOsX) macosArm64()
+    if (currentOs.isMacOsX) iosSimulatorArm64()
+    if (currentOs.isMacOsX) iosArm64()
+    if (currentOs.isMacOsX) iosX64()
 
 
     sourceSets {
@@ -63,37 +65,6 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-js"))
             }
-        }
-
-        val nativeMain by creating {
-            dependsOn(commonMain)
-        }
-
-        val nativeTest by creating {
-            dependsOn(commonTest)
-        }
-
-        if (!OperatingSystem.current().isLinux) {
-            val mingwX64Main by getting { dependsOn(nativeMain) }
-            val mingwX64Test by getting { dependsOn(nativeTest) }
-        }
-        if (OperatingSystem.current().isMacOsX) {
-            val macosArm64Main by getting { dependsOn(nativeMain) }
-            val macosArm64Test by getting { dependsOn(nativeTest) }
-            val macosX64Main by getting { dependsOn(nativeMain) }
-            val macosX64Test by getting { dependsOn(nativeTest) }
-            val iosSimulatorArm64Main by getting { dependsOn(nativeMain) }
-            val iosSimulatorArm64Test by getting { dependsOn(nativeTest) }
-            val iosArm64Main by getting { dependsOn(nativeMain) }
-            val iosArm64Test by getting { dependsOn(nativeTest) }
-            val iosX64Main by getting { dependsOn(nativeMain) }
-            val iosX64Test by getting { dependsOn(nativeTest) }
-        }
-        if (!OperatingSystem.current().isWindows) {
-            val linuxX64Main by getting { dependsOn(nativeMain) }
-            val linuxX64Test by getting { dependsOn(nativeTest) }
-            //val linuxArm64Main by getting { dependsOn(nativeMain) }
-            //val linuxArm64Test by getting { dependsOn(nativeTest) }
         }
     }
 }

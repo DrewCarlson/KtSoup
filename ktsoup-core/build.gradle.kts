@@ -34,16 +34,17 @@ kotlin {
         }
         nodejs()
     }
+    val currentOs = OperatingSystem.current()
     configure(
         listOfNotNull(
-            if (!OperatingSystem.current().isLinux) mingwX64() else null,
-            if (!OperatingSystem.current().isWindows) linuxX64() else null,
-            if (!OperatingSystem.current().isWindows) linuxArm64() else null,
-            if (OperatingSystem.current().isMacOsX) macosX64() else null,
-            if (OperatingSystem.current().isMacOsX) macosArm64() else null,
-            if (OperatingSystem.current().isMacOsX) iosSimulatorArm64() else null,
-            if (OperatingSystem.current().isMacOsX) iosArm64() else null,
-            if (OperatingSystem.current().isMacOsX) iosX64() else null,
+            if (!currentOs.isLinux) mingwX64() else null,
+            if (!currentOs.isWindows) linuxX64() else null,
+            if (!currentOs.isWindows) linuxArm64() else null,
+            if (currentOs.isMacOsX) macosX64() else null,
+            if (currentOs.isMacOsX) macosArm64() else null,
+            if (currentOs.isMacOsX) iosSimulatorArm64() else null,
+            if (currentOs.isMacOsX) iosArm64() else null,
+            if (currentOs.isMacOsX) iosX64() else null,
         )
     ) {
         compilations.getByName("main") {
@@ -80,12 +81,12 @@ kotlin {
                     KonanTarget.IOS_SIMULATOR_ARM64,
                     KonanTarget.IOS_X64,
                     KonanTarget.MACOS_ARM64,
-                    KonanTarget.MACOS_X64 -> if (OperatingSystem.current().isMacOsX) applyExtraOpts()
+                    KonanTarget.MACOS_X64 -> if (currentOs.isMacOsX) applyExtraOpts()
 
                     KonanTarget.LINUX_ARM64,
-                    KonanTarget.LINUX_X64 -> if (!OperatingSystem.current().isWindows) applyExtraOpts()
+                    KonanTarget.LINUX_X64 -> if (!currentOs.isWindows) applyExtraOpts()
 
-                    KonanTarget.MINGW_X64 -> if (OperatingSystem.current().isWindows) applyExtraOpts()
+                    KonanTarget.MINGW_X64 -> if (currentOs.isWindows) applyExtraOpts()
                     else -> Unit
                 }
                 val downloadTaskName = "downloadLiblexbor${nativeTargetName}"
@@ -150,37 +151,6 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-js"))
             }
-        }
-
-        val nativeMain by creating {
-            dependsOn(commonMain)
-        }
-
-        val nativeTest by creating {
-            dependsOn(commonTest)
-        }
-
-        if (!OperatingSystem.current().isLinux) {
-            val mingwX64Main by getting { dependsOn(nativeMain) }
-            val mingwX64Test by getting { dependsOn(nativeTest) }
-        }
-        if (OperatingSystem.current().isMacOsX) {
-            val macosArm64Main by getting { dependsOn(nativeMain) }
-            val macosArm64Test by getting { dependsOn(nativeTest) }
-            val macosX64Main by getting { dependsOn(nativeMain) }
-            val macosX64Test by getting { dependsOn(nativeTest) }
-            val iosSimulatorArm64Main by getting { dependsOn(nativeMain) }
-            val iosSimulatorArm64Test by getting { dependsOn(nativeTest) }
-            val iosArm64Main by getting { dependsOn(nativeMain) }
-            val iosArm64Test by getting { dependsOn(nativeTest) }
-            val iosX64Main by getting { dependsOn(nativeMain) }
-            val iosX64Test by getting { dependsOn(nativeTest) }
-        }
-        if (!OperatingSystem.current().isWindows) {
-            val linuxX64Main by getting { dependsOn(nativeMain) }
-            val linuxX64Test by getting { dependsOn(nativeTest) }
-            val linuxArm64Main by getting { dependsOn(nativeMain) }
-            val linuxArm64Test by getting { dependsOn(nativeTest) }
         }
     }
 }
