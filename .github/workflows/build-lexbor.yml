@@ -210,7 +210,7 @@ jobs:
       contents: write
     steps:
       - name: Download Build Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
       - run: |
           zip -r mingw_x64.zip mingw_x64
           zip -r linux_arm64.zip linux_arm64
