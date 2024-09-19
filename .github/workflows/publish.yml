@@ -89,4 +89,4 @@ jobs:
           VERSION_WITH_V=${{ github.ref_name }}
           VERSION=${VERSION#v}
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-          mike deploy --push $VERSION_WITH_V latest
+          mike deploy --update-aliases --push $VERSION_WITH_V latest
