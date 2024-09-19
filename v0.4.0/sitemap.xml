@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://drewcarlson.github.io/KtSoup/v0.4.0/</loc>
+         <lastmod>2024-09-19</lastmod>
+    </url>
+    <url>
+         <loc>https://drewcarlson.github.io/KtSoup/v0.4.0/1-getting-started/</loc>
+         <lastmod>2024-09-19</lastmod>
+    </url>
+    <url>
+         <loc>https://drewcarlson.github.io/KtSoup/v0.4.0/2-download/</loc>
+         <lastmod>2024-09-19</lastmod>
+    </url>
+    <url>
+         <loc>https://drewcarlson.github.io/KtSoup/v0.4.0/3-scraping-example/</loc>
+         <lastmod>2024-09-19</lastmod>
+    </url>
+    <url>
+         <loc>https://drewcarlson.github.io/KtSoup/v0.4.0/development/building/</loc>
+         <lastmod>2024-09-19</lastmod>
+    </url>
+    <url>
+         <loc>https://drewcarlson.github.io/KtSoup/v0.4.0/development/documentation/</loc>
+         <lastmod>2024-09-19</lastmod>
+    </url>
+</urlset>
