@@ -21,8 +21,8 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.utils.io.*
-import io.ktor.utils.io.errors.*
 import kotlinx.coroutines.*
+import kotlinx.io.IOException
 
 private val httpClientMap = mutableMapOf<KtSoupParser, HttpClient>()
 
