@@ -22,7 +22,7 @@ kotlin {
     val currentOs = OperatingSystem.current()
     if (!currentOs.isLinux) mingwX64()
     if (!currentOs.isWindows) linuxX64()
-    //if (!currentOs.isWindows) linuxArm64()
+    if (!currentOs.isWindows) linuxArm64()
     if (currentOs.isMacOsX) macosX64()
     if (currentOs.isMacOsX) macosArm64()
     if (currentOs.isMacOsX) iosSimulatorArm64()
