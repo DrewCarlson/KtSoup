@@ -17,7 +17,7 @@ dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 binaryCompat = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binary_compat" }
-kotlinter = { id = "org.jmailen.kotlinter", version = "4.4.1" }
+kotlinter = { id = "org.jmailen.kotlinter", version = "4.5.0" }
 mavenPublish = { id = "com.vanniktech.maven.publish", version = "0.30.0" }
 downloadPlugin = { id = "de.undercouch.download", version = "5.6.0" }
 
