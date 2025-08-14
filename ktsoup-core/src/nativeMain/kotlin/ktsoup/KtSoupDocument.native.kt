@@ -40,24 +40,24 @@ public actual class KtSoupDocument internal constructor(
     }
 
     public actual fun body(): KtSoupElement? {
-        return lxb_html_document_body_element(checkDocument())
+        return lxb_html_document_body_element_noi(checkDocument())
             ?.let { KtSoupElement(it.reinterpret()) }
     }
 
     public actual fun head(): KtSoupElement? {
-        return lxb_html_document_head_element(checkDocument())
+        return lxb_html_document_head_element_noi(checkDocument())
             ?.let { KtSoupElement(it.reinterpret()) }
     }
 
     public actual fun getElementById(id: String): KtSoupElement? = memScoped {
         val idQuery = id.cstr
         val attrQuery = "id".cstr
-        val collection = checkNotNull(lxb_dom_collection_make(checkDocument().reinterpret(), START_LIST_SIZE)) {
+        val collection = checkNotNull(lxb_dom_collection_make_noi(checkDocument().reinterpret(), START_LIST_SIZE)) {
             "Failed to create dom collection: lxb_dom_collection_make()"
         }
         defer { lxb_dom_collection_destroy(collection, self_destroy = true) }
         val status = lxb_dom_elements_by_attr(
-            checkDocument().pointed.body?.reinterpret(),
+            checkDocument().reinterpret(),
             collection,
             attrQuery.ptr.reinterpret(),
             2uL,
@@ -69,8 +69,8 @@ public actual class KtSoupDocument internal constructor(
             "Failed lxb_dom_elements_by_attr for id='$id'"
         }
 
-        return if (lxb_dom_collection_length(collection) > 0u) {
-            lxb_dom_collection_element(collection, 0u)
+        return if (lxb_dom_collection_length_noi(collection) > 0u) {
+            lxb_dom_collection_element_noi(collection, 0u)
                 ?.let { KtSoupElement(it.reinterpret()) }
         } else {
             null
@@ -78,13 +78,13 @@ public actual class KtSoupDocument internal constructor(
     }
 
     public actual fun getElementsByClass(className: String): List<KtSoupElement> = memScoped {
-        val body = checkDocument().pointed.body ?: return emptyList()
+        val docPointer = checkDocument()
         val classQuery = className.cstr
-        val collection = lxb_dom_collection_make(checkDocument().reinterpret(), 128u)
+        val collection = lxb_dom_collection_make_noi(docPointer.reinterpret(), 128u)
             ?: throw RuntimeException("Could not create collection")
         defer { lxb_dom_collection_destroy(collection, self_destroy = true) }
         val status = lxb_dom_elements_by_class_name(
-            body.reinterpret(),
+            docPointer.reinterpret(),
             collection,
             classQuery.ptr.reinterpret(),
             className.length.convert(),
@@ -96,13 +96,13 @@ public actual class KtSoupDocument internal constructor(
     }
 
     public actual fun getElementsByTagName(tagName: String): List<KtSoupElement> = memScoped {
-        val body = checkDocument().pointed.body ?: return emptyList()
+        val docPointer = checkDocument()
         val tagQuery = tagName.cstr
-        val collection = lxb_dom_collection_make(checkDocument().reinterpret(), START_LIST_SIZE)
+        val collection = lxb_dom_collection_make_noi(docPointer.reinterpret(), START_LIST_SIZE)
             ?: throw RuntimeException("Could not create collection")
         defer { lxb_dom_collection_destroy(collection, self_destroy = true) }
         val status = lxb_dom_elements_by_tag_name(
-            body.reinterpret(),
+            docPointer.reinterpret(),
             collection,
             tagQuery.ptr.reinterpret(),
             tagName.length.convert(),
@@ -115,8 +115,8 @@ public actual class KtSoupDocument internal constructor(
     }
 
     private fun generateElementsList(collection: CPointer<lxb_dom_collection_t>): List<KtSoupElement> {
-        return List(lxb_dom_collection_length(collection).convert()) { i ->
-            val element = checkNotNull(lxb_dom_collection_node(collection, i.convert()))
+        return List(lxb_dom_collection_length_noi(collection).convert()) { i ->
+            val element = checkNotNull(lxb_dom_collection_node_noi(collection, i.convert()))
             KtSoupElement(element.reinterpret())
         }
     }

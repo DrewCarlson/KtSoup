@@ -25,7 +25,7 @@ public actual open class KtSoupElement internal constructor(
 ) : KtSoupNode(elementPtr.pointed.node.ptr) {
     public actual fun id(): String? = memScoped {
         val len = alloc<size_tVar>()
-        lxb_dom_element_id(
+        lxb_dom_element_id_noi(
             elementPtr.pointed.readValue(),
             len.ptr,
         )?.toKStringFromUtf8(len.value)
@@ -33,7 +33,7 @@ public actual open class KtSoupElement internal constructor(
 
     public actual fun className(): String? = memScoped {
         val len = alloc<size_tVar>()
-        lxb_dom_element_class(
+        lxb_dom_element_class_noi(
             elementPtr.pointed.readValue(),
             len.ptr,
         )?.toKStringFromUtf8(len.value)
@@ -55,24 +55,24 @@ public actual open class KtSoupElement internal constructor(
             name.length.convert(),
         )?.let { attr ->
             val len = alloc<size_tVar>()
-            lxb_dom_attr_value(attr, len.ptr)?.toKStringFromUtf8(len.value)
+            lxb_dom_attr_value_noi(attr, len.ptr)?.toKStringFromUtf8(len.value)
         }
     }
 
     public actual fun attrs(): Map<String, String> {
         val attrMap = mutableMapOf<String, String>()
         memScoped {
-            var attr = lxb_dom_element_first_attribute(elementPtr)
+            var attr = lxb_dom_element_first_attribute_noi(elementPtr)
             while (attr != null) {
                 val len = alloc<size_tVar>()
                 val attrName = lxb_dom_attr_qualified_name(attr, len.ptr)
                     ?.toKStringFromUtf8(len.value)
-                val attrValue = lxb_dom_attr_value(attr, len.ptr)
+                val attrValue = lxb_dom_attr_value_noi(attr, len.ptr)
                     ?.toKStringFromUtf8(len.value)
                 if (attrName != null && attrValue != null) {
                     attrMap[attrName] = attrValue
                 }
-                attr = lxb_dom_element_next_attribute(attr)
+                attr = lxb_dom_element_next_attribute_noi(attr)
             }
         }
         return attrMap
