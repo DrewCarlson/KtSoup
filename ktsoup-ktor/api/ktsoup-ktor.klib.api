@@ -1,0 +1,12 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, linuxArm64, linuxX64, macosArm64, macosX64, mingwX64]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <org.drewcarlson:ktsoup-ktor>
+final fun (ktsoup/KtSoupParser).ktsoup/closeClient() // ktsoup/closeClient|closeClient@ktsoup.KtSoupParser(){}[0]
+final fun (ktsoup/KtSoupParser).ktsoup/withClient(io.ktor.client/HttpClient): ktsoup/KtSoupParser // ktsoup/withClient|withClient@ktsoup.KtSoupParser(io.ktor.client.HttpClient){}[0]
+final fun (ktsoup/KtSoupParser).ktsoup/withClientConfig(kotlin/Function1<io.ktor.client/HttpClientConfig<*>, kotlin/Unit>): ktsoup/KtSoupParser // ktsoup/withClientConfig|withClientConfig@ktsoup.KtSoupParser(kotlin.Function1<io.ktor.client.HttpClientConfig<*>,kotlin.Unit>){}[0]
+final suspend fun (ktsoup/KtSoupParser).ktsoup/parseRemote(kotlin/String): ktsoup/KtSoupDocument // ktsoup/parseRemote|parseRemote@ktsoup.KtSoupParser(kotlin.String){}[0]

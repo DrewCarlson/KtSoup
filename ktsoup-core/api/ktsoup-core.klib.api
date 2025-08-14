@@ -1,0 +1,92 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, linuxArm64, linuxX64, macosArm64, macosX64, mingwX64]
+// Alias: native => [iosArm64, iosSimulatorArm64, iosX64, linuxArm64, linuxX64, macosArm64, macosX64, mingwX64]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <org.drewcarlson:ktsoup-core>
+final enum class ktsoup/KtSoupNodeType : kotlin/Enum<ktsoup/KtSoupNodeType> { // ktsoup/KtSoupNodeType|null[0]
+    enum entry ATTRIBUTE // ktsoup/KtSoupNodeType.ATTRIBUTE|null[0]
+    enum entry CDATA_SECTION // ktsoup/KtSoupNodeType.CDATA_SECTION|null[0]
+    enum entry COMMENT // ktsoup/KtSoupNodeType.COMMENT|null[0]
+    enum entry DOCUMENT // ktsoup/KtSoupNodeType.DOCUMENT|null[0]
+    enum entry DOCUMENT_FRAGMENT // ktsoup/KtSoupNodeType.DOCUMENT_FRAGMENT|null[0]
+    enum entry DOCUMENT_TYPE // ktsoup/KtSoupNodeType.DOCUMENT_TYPE|null[0]
+    enum entry ELEMENT // ktsoup/KtSoupNodeType.ELEMENT|null[0]
+    enum entry ENTITY // ktsoup/KtSoupNodeType.ENTITY|null[0]
+    enum entry ENTITY_REFERENCE // ktsoup/KtSoupNodeType.ENTITY_REFERENCE|null[0]
+    enum entry LAST_ENTRY // ktsoup/KtSoupNodeType.LAST_ENTRY|null[0]
+    enum entry NOTATION // ktsoup/KtSoupNodeType.NOTATION|null[0]
+    enum entry PROCESSING_INSTRUCTION // ktsoup/KtSoupNodeType.PROCESSING_INSTRUCTION|null[0]
+    enum entry TEXT // ktsoup/KtSoupNodeType.TEXT|null[0]
+    enum entry UNDEF // ktsoup/KtSoupNodeType.UNDEF|null[0]
+
+    final val entries // ktsoup/KtSoupNodeType.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<ktsoup/KtSoupNodeType> // ktsoup/KtSoupNodeType.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): ktsoup/KtSoupNodeType // ktsoup/KtSoupNodeType.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<ktsoup/KtSoupNodeType> // ktsoup/KtSoupNodeType.values|values#static(){}[0]
+}
+
+abstract interface ktsoup/KtSoupParser { // ktsoup/KtSoupParser|null[0]
+    abstract fun parse(kotlin/String): ktsoup/KtSoupDocument // ktsoup/KtSoupParser.parse|parse(kotlin.String){}[0]
+    abstract fun parseChunked(kotlin/Int = ..., kotlin/Function1<kotlin/ByteArray, kotlin/Int>): ktsoup/KtSoupDocument // ktsoup/KtSoupParser.parseChunked|parseChunked(kotlin.Int;kotlin.Function1<kotlin.ByteArray,kotlin.Int>){}[0]
+    abstract suspend fun parseChunkedAsync(kotlin/Int = ..., kotlin.coroutines/SuspendFunction1<kotlin/ByteArray, kotlin/Int>): ktsoup/KtSoupDocument // ktsoup/KtSoupParser.parseChunkedAsync|parseChunkedAsync(kotlin.Int;kotlin.coroutines.SuspendFunction1<kotlin.ByteArray,kotlin.Int>){}[0]
+
+    final object Companion : ktsoup/KtSoupParser { // ktsoup/KtSoupParser.Companion|null[0]
+        final fun create(): ktsoup/KtSoupParser // ktsoup/KtSoupParser.Companion.create|create(){}[0]
+        final fun parse(kotlin/String): ktsoup/KtSoupDocument // ktsoup/KtSoupParser.Companion.parse|parse(kotlin.String){}[0]
+        final fun parseChunked(kotlin/Int, kotlin/Function1<kotlin/ByteArray, kotlin/Int>): ktsoup/KtSoupDocument // ktsoup/KtSoupParser.Companion.parseChunked|parseChunked(kotlin.Int;kotlin.Function1<kotlin.ByteArray,kotlin.Int>){}[0]
+        final suspend fun parseChunkedAsync(kotlin/Int, kotlin.coroutines/SuspendFunction1<kotlin/ByteArray, kotlin/Int>): ktsoup/KtSoupDocument // ktsoup/KtSoupParser.Companion.parseChunkedAsync|parseChunkedAsync(kotlin.Int;kotlin.coroutines.SuspendFunction1<kotlin.ByteArray,kotlin.Int>){}[0]
+    }
+}
+
+final class ktsoup/KtSoupDocument : ktsoup/KtSoupElement { // ktsoup/KtSoupDocument|null[0]
+    final fun body(): ktsoup/KtSoupElement? // ktsoup/KtSoupDocument.body|body(){}[0]
+    final fun close() // ktsoup/KtSoupDocument.close|close(){}[0]
+    final fun getElementById(kotlin/String): ktsoup/KtSoupElement? // ktsoup/KtSoupDocument.getElementById|getElementById(kotlin.String){}[0]
+    final fun getElementsByClass(kotlin/String): kotlin.collections/List<ktsoup/KtSoupElement> // ktsoup/KtSoupDocument.getElementsByClass|getElementsByClass(kotlin.String){}[0]
+    final fun getElementsByTagName(kotlin/String): kotlin.collections/List<ktsoup/KtSoupElement> // ktsoup/KtSoupDocument.getElementsByTagName|getElementsByTagName(kotlin.String){}[0]
+    final fun head(): ktsoup/KtSoupElement? // ktsoup/KtSoupDocument.head|head(){}[0]
+    final fun title(): kotlin/String // ktsoup/KtSoupDocument.title|title(){}[0]
+    final inline fun <#A1: kotlin/Any?> use(crossinline kotlin/Function1<ktsoup/KtSoupDocument, #A1>): #A1 // ktsoup/KtSoupDocument.use|use(kotlin.Function1<ktsoup.KtSoupDocument,0:0>){0§<kotlin.Any?>}[0]
+}
+
+open class ktsoup/KtSoupElement : ktsoup/KtSoupNode { // ktsoup/KtSoupElement|null[0]
+    final fun attr(kotlin/String): kotlin/String? // ktsoup/KtSoupElement.attr|attr(kotlin.String){}[0]
+    final fun attrs(): kotlin.collections/Map<kotlin/String, kotlin/String> // ktsoup/KtSoupElement.attrs|attrs(){}[0]
+    final fun className(): kotlin/String? // ktsoup/KtSoupElement.className|className(){}[0]
+    final fun id(): kotlin/String? // ktsoup/KtSoupElement.id|id(){}[0]
+    final fun querySelector(kotlin/String): ktsoup/KtSoupElement? // ktsoup/KtSoupElement.querySelector|querySelector(kotlin.String){}[0]
+    final fun querySelectorAll(kotlin/String): kotlin.collections/List<ktsoup/KtSoupElement> // ktsoup/KtSoupElement.querySelectorAll|querySelectorAll(kotlin.String){}[0]
+    final fun tagName(): kotlin/String // ktsoup/KtSoupElement.tagName|tagName(){}[0]
+}
+
+open class ktsoup/KtSoupNode { // ktsoup/KtSoupNode|null[0]
+    final fun child(kotlin/Int): ktsoup/KtSoupNode? // ktsoup/KtSoupNode.child|child(kotlin.Int){}[0]
+    final fun children(): kotlin.collections/List<ktsoup/KtSoupNode> // ktsoup/KtSoupNode.children|children(){}[0]
+    final fun html(): kotlin/String // ktsoup/KtSoupNode.html|html(){}[0]
+    final fun nodeName(): kotlin/String // ktsoup/KtSoupNode.nodeName|nodeName(){}[0]
+    final fun nodeType(): ktsoup/KtSoupNodeType // ktsoup/KtSoupNode.nodeType|nodeType(){}[0]
+    final fun parent(): ktsoup/KtSoupNode? // ktsoup/KtSoupNode.parent|parent(){}[0]
+    final fun textContent(): kotlin/String // ktsoup/KtSoupNode.textContent|textContent(){}[0]
+    open fun equals(kotlin/Any?): kotlin/Boolean // ktsoup/KtSoupNode.equals|equals(kotlin.Any?){}[0]
+    open fun hashCode(): kotlin/Int // ktsoup/KtSoupNode.hashCode|hashCode(){}[0]
+    open fun toString(): kotlin/String // ktsoup/KtSoupNode.toString|toString(){}[0]
+
+    // Targets: [native]
+    constructor <init>(kotlinx.cinterop/CPointer<lexbor/lxb_dom_node>) // ktsoup/KtSoupNode.<init>|<init>(kotlinx.cinterop.CPointer<lexbor.lxb_dom_node>){}[0]
+}
+
+final const val ktsoup/DEFAULT_PARSE_BUFFER_SIZE // ktsoup/DEFAULT_PARSE_BUFFER_SIZE|{}DEFAULT_PARSE_BUFFER_SIZE[0]
+    final fun <get-DEFAULT_PARSE_BUFFER_SIZE>(): kotlin/Int // ktsoup/DEFAULT_PARSE_BUFFER_SIZE.<get-DEFAULT_PARSE_BUFFER_SIZE>|<get-DEFAULT_PARSE_BUFFER_SIZE>(){}[0]
+
+// Targets: [native]
+final class ktsoup/KtSoupText : ktsoup/KtSoupNode { // ktsoup/KtSoupText|null[0]
+    constructor <init>(kotlinx.cinterop/CPointer<lexbor/lxb_dom_text>) // ktsoup/KtSoupText.<init>|<init>(kotlinx.cinterop.CPointer<lexbor.lxb_dom_text>){}[0]
+}
+
+// Targets: [js]
+final class ktsoup/KtSoupText : ktsoup/KtSoupNode // ktsoup/KtSoupText|null[0]

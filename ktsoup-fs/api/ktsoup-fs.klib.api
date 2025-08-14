@@ -1,0 +1,10 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, linuxArm64, linuxX64, macosArm64, macosX64, mingwX64]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <org.drewcarlson:ktsoup-fs>
+final fun (ktsoup/KtSoupParser).ktsoup/parseFile(kotlin/String, kotlin/Int = ...): ktsoup/KtSoupDocument // ktsoup/parseFile|parseFile@ktsoup.KtSoupParser(kotlin.String;kotlin.Int){}[0]
+final fun (ktsoup/KtSoupParser).ktsoup/parseFile(kotlinx.io.files/Path, kotlin/Int = ...): ktsoup/KtSoupDocument // ktsoup/parseFile|parseFile@ktsoup.KtSoupParser(kotlinx.io.files.Path;kotlin.Int){}[0]

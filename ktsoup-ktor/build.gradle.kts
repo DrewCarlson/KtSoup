@@ -6,6 +6,10 @@ plugins {
 }
 
 kotlin {
+    @OptIn(org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation::class)
+    abiValidation {
+        enabled = true
+    }
     jvmToolchain(11)
     jvm()
     js(IR) {
@@ -68,7 +72,3 @@ kotlin {
         }
     }
 }
-
-// A patch to satisfy Gradle's horrible behavior
-tasks.getByName("dokkaHtml").dependsOn(":ktsoup-core:transformNativeMainCInteropDependenciesMetadataForIde")
-tasks.getByName("dokkaHtml").dependsOn(":ktsoup-fs:transformNativeMainCInteropDependenciesMetadataForIde")

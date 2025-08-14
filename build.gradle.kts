@@ -6,13 +6,11 @@ import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
 plugins {
     alias(libs.plugins.multiplatform) apply false
     alias(libs.plugins.kover)
-    alias(libs.plugins.binaryCompat)
     alias(libs.plugins.dokka)
-    alias(libs.plugins.kotlinter) apply false
     alias(libs.plugins.spotless)
     alias(libs.plugins.mavenPublish) apply false
     alias(libs.plugins.downloadPlugin) apply false
-    id("com.louiscad.complete-kotlin") version "1.1.0"
+    //id("com.louiscad.complete-kotlin") version "1.1.0"
 }
 
 allprojects {
@@ -22,6 +20,12 @@ allprojects {
     repositories {
         mavenCentral()
     }
+}
+
+dependencies {
+    dokka(project(":ktsoup-core"))
+    dokka(project(":ktsoup-fs"))
+    dokka(project(":ktsoup-ktor"))
 }
 
 subprojects {
@@ -36,14 +40,6 @@ subprojects {
             target("**/**.kt")
             licenseHeaderFile(rootDir.resolve("licenseHeader.txt"))
         }
-    }
-
-    apply(plugin = "org.jmailen.kotlinter")
-    configure<org.jmailen.gradle.kotlinter.KotlinterExtension> {
-    }
-
-    tasks.withType<SpotlessApply> {
-        dependsOn("formatKotlin")
     }
 
     apply(plugin = "org.jetbrains.dokka")

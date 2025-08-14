@@ -79,10 +79,10 @@ jobs:
         run: python3 -m pip install -r ./docs/requirements.txt
 
       - name: Build KDocs
-        run: ./gradlew clean dokkaHtmlMultiModule
+        run: ./gradlew clean dokkaGeneratePublicationHtml
 
       - name: Move KDoc build
-        run: mv build/dokka/htmlMultiModule docs/kdoc
+        run: mv build/dokka/html docs/kdoc
 
       - name: Deploy with mike
         run: |

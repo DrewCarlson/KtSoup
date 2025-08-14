@@ -22,6 +22,10 @@ fun lexborSourceFiles(folder: String): List<File> =
 fun List<File>.filterHeaders(): List<File> = filter { it.name.endsWith(".h") }
 
 kotlin {
+    @OptIn(org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation::class)
+    abiValidation {
+        enabled = true
+    }
     jvmToolchain(11)
     jvm()
     js(IR) {
@@ -50,7 +54,7 @@ kotlin {
         compilations.getByName("main") {
             val nativeTargetName = konanTarget.name
             val staticLibPath = rootProject.file("lexbor-bin/${nativeTargetName}")
-            cinterops.create("lexbor") {
+            cinterops.create("lexbor").apply {
                 packageName("lexbor")
                 includeDirs("$lexborSourcePath/..")
                 headers(lexborSourceFiles("core").filterHeaders())
@@ -105,11 +109,6 @@ kotlin {
                 tasks.getByName(interopProcessingTaskName).dependsOn(extractTask)
             }
         }
-    }
-
-    @OptIn(ExperimentalKotlinGradlePluginApi::class)
-    compilerOptions {
-        freeCompilerArgs.add("-Xexpect-actual-classes")
     }
 
     @Suppress("UNUSED_VARIABLE")
