@@ -6,7 +6,7 @@ binary_compat = "0.16.3"
 kover = "0.8.3"
 spotless = "6.25.0"
 coroutines = "1.9.0"
-atomicfu = "0.26.0"
+atomicfu = "0.29.0"
 lexbor = "2.5.0"
 kotlinio = "0.6.0"
 
