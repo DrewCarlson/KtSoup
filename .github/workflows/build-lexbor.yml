@@ -25,7 +25,7 @@ jobs:
           make install
 
       - name: Archive production artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: macos_arm64
           path: lexbor/install/lib/liblexbor_static.a
@@ -49,7 +49,7 @@ jobs:
           make install
 
       - name: Archive production artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: macos_x64
           path: lexbor/install/lib/liblexbor_static.a
@@ -73,7 +73,7 @@ jobs:
           make install
 
       - name: Archive production artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ios_arm64
           path: lexbor/install/lib/liblexbor_static.a
@@ -97,7 +97,7 @@ jobs:
           make install
 
       - name: Archive production artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ios_simulator_arm64
           path: lexbor/install/lib/liblexbor_static.a
@@ -121,7 +121,7 @@ jobs:
           make install
 
       - name: Archive production artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ios_x64
           path: lexbor/install/lib/liblexbor_static.a
@@ -145,7 +145,7 @@ jobs:
           make install
 
       - name: Archive production artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: linux_x64
           path: lexbor/install/lib/liblexbor_static.a
@@ -171,7 +171,7 @@ jobs:
           make install
 
       - name: Archive production artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: linux_arm64
           path: lexbor/install/lib/liblexbor_static.a
@@ -197,7 +197,7 @@ jobs:
           make install
 
       - name: Archive production artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: mingw_x64
           path: lexbor/install/lib/liblexbor_static.a
@@ -210,7 +210,7 @@ jobs:
       contents: write
     steps:
       - name: Download Build Artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
       - run: |
           zip -r mingw_x64.zip mingw_x64
           zip -r linux_arm64.zip linux_arm64

@@ -43,14 +43,14 @@ jobs:
         run: ./gradlew koverXmlReport
 
       - name: Archive Reports
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: ${{ always() }}
         with:
           name: reports-macos
           path: '**/build/reports/*'
 
       - name: Archive Test Results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: ${{ always() }}
         with:
           name: test-results-macos
@@ -71,14 +71,14 @@ jobs:
         run: ./gradlew mingwX64Test
 
       - name: Archive Reports
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: ${{ always() }}
         with:
           name: reports-windows
           path: '**/build/reports/*'
 
       - name: Archive Test Results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: ${{ always() }}
         with:
           name: test-results-windows
@@ -109,14 +109,14 @@ jobs:
         run: ./gradlew linuxX64Test
 
       - name: Archive Reports
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: ${{ always() }}
         with:
           name: reports-linux
           path: '**/build/reports/*'
 
       - name: Archive Test Results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: ${{ always() }}
         with:
           name: test-results-ubuntu
@@ -128,7 +128,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Download kover reports
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           pattern: reports-*
           merge-multiple: true
@@ -146,7 +146,7 @@ jobs:
       checks: write
     steps:
       - name: Download test results
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           pattern: test-results-*
           merge-multiple: true
