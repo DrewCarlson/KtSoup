@@ -8,7 +8,7 @@ plugins {
 
 val hostOs = DefaultNativePlatform.getCurrentOperatingSystem()
 val testGenSrcPath = "build/ktgen/config"
-val installTestConfig by tasks.creating {
+val installTestConfig by tasks.registering {
     val configFile = file("${testGenSrcPath}/config.kt")
     onlyIf { !configFile.exists() }
     doFirst {
@@ -29,7 +29,7 @@ kotlin {
     abiValidation {
         enabled = true
     }
-    jvmToolchain(11)
+    jvmToolchain(17)
     jvm()
     js(IR) {
         nodejs()

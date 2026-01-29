@@ -20,7 +20,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: 11
+          java-version: 17
       - uses: gradle/actions/setup-gradle@v4
       - name: Cache Build files
         uses: actions/cache@v4
@@ -65,7 +65,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: 11
+          java-version: 17
 
       - name: Test Windows Target
         run: ./gradlew mingwX64Test
@@ -93,7 +93,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: 11
+          java-version: 17
       - name: Cache Build files
         uses: actions/cache@v4
         with:

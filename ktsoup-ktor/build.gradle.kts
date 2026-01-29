@@ -10,7 +10,7 @@ kotlin {
     abiValidation {
         enabled = true
     }
-    jvmToolchain(11)
+    jvmToolchain(17)
     jvm()
     js(IR) {
         browser {
