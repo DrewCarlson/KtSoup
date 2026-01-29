@@ -1,6 +1,6 @@
 [versions]
 kotlin = { strictly = "2.2.10" }
-dokka = "2.0.0"
+dokka = "2.1.0"
 ktorio = "3.2.3"
 kover = "0.9.1"
 spotless = "7.2.1"
