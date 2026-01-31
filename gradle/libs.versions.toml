@@ -2,7 +2,7 @@
 kotlin = { strictly = "2.2.10" }
 dokka = "2.0.0"
 ktorio = "3.2.3"
-kover = "0.9.1"
+kover = "0.9.5"
 spotless = "7.2.1"
 coroutines = "1.10.2"
 atomicfu = "0.29.0"
